@@ -9,7 +9,7 @@
     private: yes
 
   vars:
-    vcenter: "usa1-2-vcenter.oc.vmware.com"
+    vcenter: "usa1-2-vcenter"
     vcenter_user: "administrator@vsphere.local"
     datacenter: "Lab-Datacenter"
     template: "coreos.template"
