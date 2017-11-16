@@ -1,0 +1,51 @@
+{
+  "ignition": {
+    "version": "2.1.0",
+    "config": {}
+  },
+  "storage": {
+    "disks": [{
+      "device": "/dev/sda",
+      "wipeTable": true,
+      "partitions": [{
+        "label": "ROOT",
+        "number": 0,
+        "size": 0,
+        "start": 0
+      }]
+    }],
+    "filesystems": [{
+      "mount": {
+        "device": "/dev/sda1",
+        "format": "ext4",
+        "wipeFilesystem": true,
+        "options": [ "-L", "ROOT" ]
+      }
+    }]
+  },
+  "systemd": {
+    "units": [
+      {
+        "contents": "[Unit]\nDescription=Set hostname to DHCP FQDN\n\n[Service]\nType=oneshot\nExecStart=/bin/sh -c \"IP=$(ip add show ens192 | awk '/inet/ {print $2}' | cut -d/ -f1 |cut -d. -f4 | head -1) ; sudo hostnamectl set-hostname dhcp-coreos$IP\"\n",
+        "enabled": true,
+        "name": "set-hostname.service"
+      },
+      {
+        "name": "etcd2.service",
+        "enabled": true
+      }
+    ]
+  },
+  "networkd": {},
+  "passwd": {
+    "users": [
+      {
+        "name": "deploy",
+        "sshAuthorizedKeys": [
+          "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAAEAQCsNebg9k312OhcZlC+JM8daEyT5XpFEb1gnUgEHms+/yft6rlr+Y/BOXC9r/0UR2VB41tpx9B8ZZADHa/I8cZKctRP4idwKWlPJlxqPohVWwgGk9oYyDY4612bO9gYQros9XKDI+IZMc0xOrdm7D7dowzheez77OQeZFKtef0w61LdBTQn4JXAK0DhuldGwvoH7SDkEMk1FH3U45DSljgMOAwbxnr6Gy2embr6qHo15zrGs0OyHFY0YZXCZ1xvhNYuBm8/H06JZnI2qPBGWaRwDNky6MXEtWBUSXjuMsIApGg1nR3hjZbwtN3uH0/VMH/uk7m9mvZXpeu/ktAn70IP/8wq4HjN6pXGY9gsvA2qQULNAI8t5wYuwSa/cm/aWC0Z8rgS6wE04j5i5jLlLpVNHvmBrc3BxKO5AV9k/19TQLSnqbmT9aU7mC8CvguHsy2g5nagqzUwHfpbOS64kYcgISu2LjYdOCRpr9NSzeR3N3l+3yG+QfNE73x9yPifd9aE21Mc3JLIwq+Qo0ZmKrgAu615Y2r7bcEx4wt7SF98rvAC8IZDbMNukSUMR3LPRaQq00OGUxVPdHdxwyLaH4UZ3wb43tFfaDreYAy1SeX1cTHjZ01MAHk2P5mhGPxeUh7LW7w+57GoeFY+aF9SEyrdqpd6DhUC15pJT9Tje/sxTOXUCVWyGgsyxi4ygeZ3ZUb0oUwQ2bnnnzNSXHl+qx722w9saE+LNuZOsnTY26+1TVaYKNczQwGsnjyZdF3VslsQskZ5cld5AeHkPrkrsISjhCAPxP7hOLJRhY2gZk/FqwycZdjARz75MNegidQFNN7MuGaN+F9YinQIHsbReoGHyaKN40tyThs9RwZr7lOPgngjhEddEuaAgre7k4sln9x3PRlNzGX5kPVK+7ccQMWI3DgvMUxkUtV5Di+BNzhtUVN8D8yNjajAf3zk7gEgWdeSNse+GUCwQWt0VCwDIfA1RhfWnyMwukgxqmQe7m5jM4YjLyR7AFe2CeB08jOES9s+N44kWOlrnG3Mf41W2oZ6FbiFcB7+YHGNxnlxK+0QluP17rISgUmnCkEgwGbyisXMrNHTaGfApxd4CertVab0wOvtDNnH4x7ejEiNHiN1crOzpMtnSVnrRi+M+f9w3ChCsirc+3H8tbpSOssI7D3p1eWZlF6z1OSb9pp4+JYwlmAisyz/vZyjC7vtEXsJt3e4JLM1ef62mZTcKHP8xWP3k78hPB5twzSwhMVtZCB/MIT3pg7DA90fbhBkHZIVczgBjN9tOJilHPTuBeuKNzWD0Rhi0CSdzohDYVsO/PKA5ZyEncx83Y9pc4zpcrxgdU2H5NdqkLW9yw7O5gvau7jj cmutchler@cmutchler-MBP.local"
+        ],
+        "groups": [ "sudo", "docker" ]
+      }
+    ]
+  }
+}

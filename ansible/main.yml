@@ -1,0 +1,46 @@
+---
+- hosts: localhost
+  gather_facts: false
+  connection: local
+
+  vars_prompt:
+  - name: "vcenter_pass"
+    prompt: "Enter password"
+    private: yes
+
+  vars:
+    vcenter: "usa1-2-vcenter.oc.vmware.com"
+    vcenter_user: "administrator@vsphere.local"
+    datacenter: "Lab-Datacenter"
+    template: "coreos.template"
+    num_nodes: "{{ nodes }}"
+    folder: "{{ folder }}"
+    vm_prefix: "{{ prefix }}"
+
+  tasks:
+  - name: Check for existing VM folder
+    vmware_folder:
+      hostname: "{{ vcenter }}"
+      username: "{{ vcenter_user }}"
+      password: "{{ vcenter_pass }}"
+      validate_certs: False
+      datacenter: "{{ datacenter }}"
+      cluster: Cluster01
+      folder: "{{ folder }}"
+      state: present
+
+  - name: Create VMs from blank CoreOS template
+    vmware_guest:
+      hostname: "{{ vcenter }}"
+      username: "{{ vcenter_user }}"
+      password: "{{ vcenter_pass }}"
+      validate_certs: False
+      name: "{{ prefix }}-coreos{{ item }}"
+      template: "{{ template }}"
+      datacenter: "{{ datacenter }}"
+      cluster: Cluster01
+      state: poweredon
+      folder: "/vm/{{ folder }}"
+    delegate_to: localhost
+    register: createvm
+    with_sequence: start=1 end={{num_nodes|int}}

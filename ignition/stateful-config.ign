@@ -1,0 +1,73 @@
+{
+  "ignition": {
+    "version": "2.1.0",
+    "config": {}
+  },
+  "storage": {
+    "files": [
+      {
+        "filesystem": "root",
+        "group": {},
+        "path": "/etc/motd",
+        "user": {},
+        "contents": {
+          "source": "data:,Stateful%20CoreOS%20Installation.%0A",
+          "verification": {}
+        }
+      },
+      {
+        "filesystem": "root",
+        "group": {},
+        "path": "/home/deploy/install_python.sh",
+        "user": {},
+        "contents": {
+          "source":"data:,%23!%2Fusr%2Fbin%2Fbash%0Asudo%20mkdir%20-p%20%2Fopt%2Fbin%0Acd%20%2Fopt%0Asudo%20wget%20http%3A%2F%2F192.168.0.2%3A8080%2FActivePython-2.7.13.2715-linux-x86_64-glibc-2.12-402695.tar.gz%0Asudo%20tar%20-zxf%20ActivePython-2.7.13.2715-linux-x86_64-glibc-2.12-402695.tar.gz%0Asudo%20mv%20ActivePython-2.7.13.2715-linux-x86_64-glibc-2.12-402695%20apy%0Asudo%20%2Fopt%2Fapy%2Finstall.sh%20-I%20%2Fopt%2Fpython%0Asudo%20ln%20-sf%20%2Fopt%2Fpython%2Fbin%2Feasy_install%20%2Fopt%2Fbin%2Feasy_install%0Asudo%20ln%20-sf%20%2Fopt%2Fpython%2Fbin%2Fpip%20%2Fopt%2Fbin%2Fpip%0Asudo%20ln%20-sf%20%2Fopt%2Fpython%2Fbin%2Fpython%20%2Fopt%2Fbin%2Fpython%0Asudo%20ln%20-sf%20%2Fopt%2Fpython%2Fbin%2Fpython%20%2Fopt%2Fbin%2Fpython2%0Asudo%20ln%20-sf%20%2Fopt%2Fpython%2Fbin%2Fvirtualenv%20%2Fopt%2Fbin%2Fvirtualenv%0Asudo%20rm%20-rf%20%2Fopt%2FActivePython-2.7.13.2715-linux-x86_64-glibc-2.12-402695.tar.gz%0A",
+          "verification": {},
+          "mode": 420
+        }
+      },
+      {
+        "filesystem": "root",
+        "group": {},
+        "path": "/home/deploy/gethost.sh",
+        "user": {},
+        "contents": {
+          "source":"data:,%23!%2Fbin%2Fbash%0AIP%3D%24(%2Fusr%2Fbin%2Fifconfig%20ens192%20%7C%20%2Fusr%2Fbin%2Fawk%20'%2Finet%5Cs%2F%20%7Bprint%20%242%7D'%20%7C%20%2Fusr%2Fbin%2Fxargs%20host%20%7C%20%2Fusr%2Fbin%2Fawk%20'%7Bprint%20%245%7D'%20%7C%20%2Fusr%2Fbin%2Fsed%20s'%2F.%24%2F%2F')%0AHOSTNAME%3D%24IP%0A%2Fusr%2Fbin%2Fsudo%20%2Fusr%2Fbin%2Fhostnamectl%20set-hostname%20%24HOSTNAME%0A",
+          "verification": {},
+          "mode": 493
+        }
+      }
+    ]
+  },
+  "systemd": {
+    "units": [
+      {
+        "contents": "[Unit]\nDescription=Use FQDN to set hostname.\nAfter=network-online.target\nWants=network-online.target\n\n[Service]\nType=oneshot\nExecStartPre=/usr/bin/chmod 755 /home/deploy/gethost.sh\nExecStartPre=/usr/bin/chown deploy:deploy /home/deploy/gethost.sh\nExecStart=/home/deploy/gethost.sh\n\n[Install]\nWantedBy=multi-user.target\n",
+        "enabled": true,
+        "name": "set-hostname.service"
+      },
+      {
+        "contents": "[Unit]\nDescription=Install Python for Ansible.\nAfter=network-online.target\nWants=network-online.target\n\n[Service]\nType=oneshot\nExecStartPre=/usr/bin/chmod 755 /home/deploy/install_python.sh\nExecStartPre=/usr/bin/chown deploy:deploy /home/deploy/install_python.sh\nExecStart=/home/deploy/install_python.sh\n\n[Install]\nWantedBy=multi-user.target\n",
+        "enabled": true,
+        "name": "env-python.service"
+      },
+      {
+        "name": "etcd2.service",
+        "enabled": true
+      }
+    ]
+  },
+  "networkd": {},
+  "passwd": {
+    "users": [
+      {
+        "name": "deploy",
+        "sshAuthorizedKeys": [
+          "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAAEAQCsNebg9k312OhcZlC+JM8daEyT5XpFEb1gnUgEHms+/yft6rlr+Y/BOXC9r/0UR2VB41tpx9B8ZZADHa/I8cZKctRP4idwKWlPJlxqPohVWwgGk9oYyDY4612bO9gYQros9XKDI+IZMc0xOrdm7D7dowzheez77OQeZFKtef0w61LdBTQn4JXAK0DhuldGwvoH7SDkEMk1FH3U45DSljgMOAwbxnr6Gy2embr6qHo15zrGs0OyHFY0YZXCZ1xvhNYuBm8/H06JZnI2qPBGWaRwDNky6MXEtWBUSXjuMsIApGg1nR3hjZbwtN3uH0/VMH/uk7m9mvZXpeu/ktAn70IP/8wq4HjN6pXGY9gsvA2qQULNAI8t5wYuwSa/cm/aWC0Z8rgS6wE04j5i5jLlLpVNHvmBrc3BxKO5AV9k/19TQLSnqbmT9aU7mC8CvguHsy2g5nagqzUwHfpbOS64kYcgISu2LjYdOCRpr9NSzeR3N3l+3yG+QfNE73x9yPifd9aE21Mc3JLIwq+Qo0ZmKrgAu615Y2r7bcEx4wt7SF98rvAC8IZDbMNukSUMR3LPRaQq00OGUxVPdHdxwyLaH4UZ3wb43tFfaDreYAy1SeX1cTHjZ01MAHk2P5mhGPxeUh7LW7w+57GoeFY+aF9SEyrdqpd6DhUC15pJT9Tje/sxTOXUCVWyGgsyxi4ygeZ3ZUb0oUwQ2bnnnzNSXHl+qx722w9saE+LNuZOsnTY26+1TVaYKNczQwGsnjyZdF3VslsQskZ5cld5AeHkPrkrsISjhCAPxP7hOLJRhY2gZk/FqwycZdjARz75MNegidQFNN7MuGaN+F9YinQIHsbReoGHyaKN40tyThs9RwZr7lOPgngjhEddEuaAgre7k4sln9x3PRlNzGX5kPVK+7ccQMWI3DgvMUxkUtV5Di+BNzhtUVN8D8yNjajAf3zk7gEgWdeSNse+GUCwQWt0VCwDIfA1RhfWnyMwukgxqmQe7m5jM4YjLyR7AFe2CeB08jOES9s+N44kWOlrnG3Mf41W2oZ6FbiFcB7+YHGNxnlxK+0QluP17rISgUmnCkEgwGbyisXMrNHTaGfApxd4CertVab0wOvtDNnH4x7ejEiNHiN1crOzpMtnSVnrRi+M+f9w3ChCsirc+3H8tbpSOssI7D3p1eWZlF6z1OSb9pp4+JYwlmAisyz/vZyjC7vtEXsJt3e4JLM1ef62mZTcKHP8xWP3k78hPB5twzSwhMVtZCB/MIT3pg7DA90fbhBkHZIVczgBjN9tOJilHPTuBeuKNzWD0Rhi0CSdzohDYVsO/PKA5ZyEncx83Y9pc4zpcrxgdU2H5NdqkLW9yw7O5gvau7jj cmutchler@cmutchler-MBP.local"
+        ],
+        "groups": [ "sudo", "docker" ]
+      }
+    ]
+  }
+}
+
