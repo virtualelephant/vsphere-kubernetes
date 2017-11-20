@@ -1,0 +1,5 @@
+nsxmanager_spec:
+        raml_file: '/home/deploy/nsxraml/nsxvapi.raml'
+        host: 'usa1-2-nsxv'
+        user: 'admin'
+        password: 'PASSWORD'

@@ -1,0 +1,85 @@
+---
+- hosts: localhost
+  connection: local
+  gather_facts: False
+  vars_files:
+    - nsxanswer.yml
+  vars_prompt:
+  - name: "vcenter_pass"
+    prompt: "Enter vCenter password"
+    private: yes
+  vars:
+    vcenter: "usa1-2-vcenter"
+    datacenter: "Lab-Datacenter"
+    datastore: "vsanDatastore"
+    cluster: "Cluster01"
+    vcenter_user: "administrator@vsphere.local"
+    switch_name: "{{ switch }}"
+    uplink_pg: "{{ uplink }}"
+    ext_ip: "{{ vip }}"
+    tz: "tzone"
+
+  tasks:
+  - name: NSX Logical Switch creation
+    nsx_logical_switch:
+      nsxmanager_spec: "{{ nsxmanager_spec }}"
+      state: present
+      transportzone: "{{ tz }}"
+      name: "{{ switch_name }}"
+      controlplanemode: "UNICAST_MODE"
+      description: "Kubernetes Infra-as-Code Tenant Logical Switch"
+    register: create_logical_switch
+
+  - name: Gather MOID for datastore for ESG creation
+    vcenter_gather_moids:
+      hostname: "{{ vcenter }}"
+      username: "{{ vcenter_user }}"
+      password: "{{ vcenter_pass }}"
+      datacenter_name: "{{ datacenter }}"
+      datastore_name: "{{ datastore }}"
+      validate_certs: False
+    register: gather_moids_ds
+    tags: esg_create
+
+  - name: Gather MOID for cluster for ESG creation
+    vcenter_gather_moids:
+      hostname: "{{ vcenter }}"
+      username: "{{ vcenter_user }}"
+      password: "{{ vcenter_pass }}"
+      datacenter_name: "{{ datacenter }}"
+      cluster_name: "{{ cluster }}"
+      validate_certs: False
+    register: gather_moids_cl
+    tags: esg_create
+
+  - name: Gather MOID for uplink
+    vcenter_gather_moids:
+      hostname: "{{ vcenter }}"
+      username: "{{ vcenter_user}}"
+      password: "{{ vcenter_pass}}"
+      datacenter_name: "{{ datacenter }}"
+      portgroup_name: "{{ uplink_pg }}"
+      validate_certs: False
+    register: gather_moids_upl_pg
+    tags: esg_create
+
+  - name: NSX Edge creation
+    nsx_edge_router:
+      nsxmanager_spec: "{{ nsxmanager_spec }}"
+      state: present
+      name: "{{ switch_name }}-edge"
+      description: "Kubernetes Infra-as-Code Tenant Edge"
+      resourcepool_moid: "{{ gather_moids_cl.object_id }}"
+      datastore_moid: "{{ gather_moids_ds.object_id }}"
+      datacenter_moid: "{{ gather_moids_cl.datacenter_moid }}"
+      interfaces:
+        vnic0: {ip: "{{ ext_ip }}", prefix_len: 26, portgroup_id: "{{ gather_moids_upl_pg.object_id }}", name: 'uplink0', iftype: 'uplink', fence_param: 'ethernet0.filter1.param1=1'}
+        vnic1: {ip: '192.168.0.1', prefix_len: 20, portgroup_id: "{{ switch_name }}", name: 'int0', iftype: 'internal', fence_param: 'ethernet0.filter1.param1=1'}
+      default_gateway: "{{ gateway }}"
+      remote_access: 'true'
+      username: 'admin'
+      password: "{{ nsx_admin_pass }}"
+      firewall: 'false'
+      ha_enabled: 'true'
+    register: create_esg
+    tags: esg_create
