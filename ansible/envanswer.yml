@@ -1,0 +1,6 @@
+vcenter: "usa1-2-vcenterm"
+vcenter_user: "administrator@vsphere.local"
+vcenter_pass: "PASSWORD"
+dc: "Lab-Datacenter"
+template: "coreos.template"
+cluster_name: "Cluster01"

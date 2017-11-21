@@ -3,16 +3,11 @@
   gather_facts: false
   connection: local
 
-  vars_prompt:
-  - name: "vcenter_pass"
-    prompt: "Enter password"
-    private: yes
+  vars_files:
+    - envanswer.yml
 
   vars:
-    vcenter: "usa1-2-vcenter"
-    vcenter_user: "administrator@vsphere.local"
-    datacenter: "Lab-Datacenter"
-    template: "coreos.template"
+    num_masters: "{{ masters }}"
     num_nodes: "{{ nodes }}"
     folder: "{{ folder }}"
     vm_prefix: "{{ prefix }}"
@@ -24,21 +19,36 @@
       username: "{{ vcenter_user }}"
       password: "{{ vcenter_pass }}"
       validate_certs: False
-      datacenter: "{{ datacenter }}"
-      cluster: Cluster01
+      datacenter: "{{ dc }}"
+      cluster: "{{ cluster_name }}"
       folder: "{{ folder }}"
       state: present
 
-  - name: Create VMs from blank CoreOS template
+  - name: Create Master VMs from blank CoreOS template
     vmware_guest:
       hostname: "{{ vcenter }}"
       username: "{{ vcenter_user }}"
       password: "{{ vcenter_pass }}"
       validate_certs: False
-      name: "{{ prefix }}-coreos{{ item }}"
+      name: "{{ prefix }}-master-coreos{{ item }}"
       template: "{{ template }}"
-      datacenter: "{{ datacenter }}"
-      cluster: Cluster01
+      datacenter: "{{ dc }}"
+      cluster: "{{ cluster_name }}"
+      state: poweredon
+      folder: "/vm/{{ folder }}"
+    delegate_to: localhost
+    register: createvm
+    with_sequence: start=1 end={{num_masters|int}}
+  - name: Create Minion VMs from blank CoreOS template
+    vmware_guest:
+      hostname: "{{ vcenter }}"
+      username: "{{ vcenter_user }}"
+      password: "{{ vcenter_pass }}"
+      validate_certs: False
+      name: "{{ prefix }}-node-coreos{{ item }}"
+      template: "{{ template }}"
+      datacenter: "{{ dc }}"
+      cluster: "{{ cluster_name }}"
       state: poweredon
       folder: "/vm/{{ folder }}"
     delegate_to: localhost
