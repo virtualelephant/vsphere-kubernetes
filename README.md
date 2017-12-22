@@ -1,6 +1,5 @@
 # vsphere-kubernetes
-Infrastructure-as-Code Project to deploy a fully-automated Kubernetes environment leveraging
-VMware vSphere, VMware NSX, Ubuntu, CoreOS and Ansible.
+Infrastructure-as-Code Project to deploy a fully-automated Kubernetes environment leveraging VMware vSphere, VMware NSX, Ubuntu, CoreOS and Ansible.
 
 Blog Posts:
 -----------
