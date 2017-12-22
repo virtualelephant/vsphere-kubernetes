@@ -7,7 +7,6 @@
     - envanswer.yml
 
   vars:
-    num_masters: "{{ masters }}"
     num_nodes: "{{ nodes }}"
     folder: "{{ folder }}"
     vm_prefix: "{{ prefix }}"
@@ -24,22 +23,6 @@
       folder: "{{ folder }}"
       state: present
 
-  - name: Create Master VMs from blank CoreOS template
-    vmware_guest:
-      hostname: "{{ vcenter }}"
-      username: "{{ vcenter_user }}"
-      password: "{{ vcenter_pass }}"
-      validate_certs: False
-      name: "{{ prefix }}-master-coreos{{ item }}"
-      template: "{{ template }}"
-      datacenter: "{{ dc }}"
-      cluster: "{{ cluster_name }}"
-      state: poweredon
-      folder: "/vm/{{ folder }}"
-    delegate_to: localhost
-    register: createvm
-    with_sequence: start=1 end={{num_masters|int}}
-
   - name: Create Minion VMs from blank CoreOS template
     vmware_guest:
       hostname: "{{ vcenter }}"
@@ -55,6 +38,3 @@
     delegate_to: localhost
     register: createvm
     with_sequence: start=1 end={{num_nodes|int}}
-
-  - debug:
-      var: master_vm_facts.instance

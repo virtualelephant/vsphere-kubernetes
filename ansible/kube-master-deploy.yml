@@ -1,0 +1,39 @@
+-
+- hosts: localhost
+  gather_facts: false
+  connection: local
+
+  vars_files:
+    - envanswer.yml
+
+  vars:
+    folder: "{{ folder }}"
+    vm_prefix: "{{ prefix }}"
+
+  tasks:
+  - name: Check for existing VM folder
+    vmware_folder:
+      hostname: "{{ hostname }}"
+      username: "{{ vcenter_user }}"
+      password: "{{ vcenter_pass }}"
+      validate_certs: False
+      datacenter: "{{ dc }}"
+      cluster: "{{ cluster_name }}"
+      folder: "{{ folder }}"
+      state: present
+
+  - name: Create Ubuntu Kubernetes Master VMs
+    vmware_guest:
+      hostname: "{{ hostname }}"
+      username: "{{ vcenter_user }}"
+      password: "{{ vcenter_pass }}"
+      validate_certs: False
+      name: "{{ prefix }}-master-{{ item }}"
+      template: "{{ ubuntu_template }}"
+      datacenter: "{{ dc }}"
+      cluster: "{{ cluster_name }}"
+      folder: "{{ folder }}"
+      state: poweredon
+    delegate_to: localhost
+    register: createvm
+    with_sequence: start=1 end=3
