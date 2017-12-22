@@ -29,6 +29,17 @@
       {
         "filesystem": "root",
         "group": {},
+        "path": "/home/deploy/install-kube.sh",
+        "user": {},
+        "contents": {
+          "source":"data:,%23!%2Fusr%2Fbin%2Fbash%0Aset%20-o%20nounset%20-o%20errexit%0ARELEASE%3D%22%24(curl%20-s%20https%3A%2F%2Fstorage.googleapis.com%2Fkubernetes-release%2Frelease%2Fstable.txt)%22%0ACNI_VERSION%3D%22v0.6.0%22%0Amkdir%20-p%20%2Fopt%2Fbin%0Acd%20%2Fopt%2Fbin%0Acurl%20-L%20--remote-name-all%20https%3A%2F%2Fstorage.googleapis.com%2Fkubernetes-release%2Frelease%2F%24%7BRELEASE%7D%2Fbin%2Flinux%2Famd64%2F%7Bkubeadm%2Ckubelet%2Ckubectl%7D%0Achmod%20%2Bx%20%7Bkubeadm%2Ckubelet%2Ckubectl%7D%0Amkdir%20-p%20%2Fopt%2Fcni%2Fbin%0Acurl%20-L%20%22https%3A%2F%2Fgithub.com%2Fcontainernetworking%2Fplugins%2Freleases%2Fdownload%2F%24%7BCNI_VERSION%7D%2Fcni-plugins-amd64-%24%7BCNI_VERSION%7D.tgz%22%20%7C%20tar%20-C%20%2Fopt%2Fcni%2Fbin%20-xz%0ABRANCH%3D%22release-%24(cut%20-f1-2%20-d%20.%3C%3C%3C%20%22%24%7BRELEASE%23%23v%7D%22)%22%0Acd%20%2Fetc%2Fsystemd%2Fsystem%2F%0Acurl%20-L%20%22https%3A%2F%2Fraw.githubusercontent.com%2Fkubernetes%2Fkubernetes%2F%24%7BBRANCH%7D%2Fbuild%2Fdebs%2Fkubelet.service%22%20%7C%20sed%20's%3A%2Fusr%2Fbin%3A%2Fopt%2Fbin%3Ag'%20%3E%20kubelet.service%0Amkdir%20-p%20%2Fetc%2Fsystemd%2Fsystem%2Fkubelet.service.d%0Acd%20%2Fetc%2Fsystemd%2Fsystem%2Fkubelet.service.d%0Acurl%20-L%20%22https%3A%2F%2Fraw.githubusercontent.com%2Fkubernetes%2Fkubernetes%2F%24%7BBRANCH%7D%2Fbuild%2Fdebs%2F10-kubeadm.conf%22%20%7C%20sed%20's%3A%2Fusr%2Fbin%3A%2Fopt%2Fbin%3Ag'%20%3E%2010-kubeadm.conf%0A",
+          "verification":{},
+          "mode":420
+        }
+      },
+      {
+        "filesystem": "root",
+        "group": {},
         "path": "/home/deploy/gethost.sh",
         "user": {},
         "contents": {
@@ -52,8 +63,9 @@
         "name": "env-python.service"
       },
       {
-        "name": "etcd2.service",
-        "enabled": true
+        "contents": "[Unit]\nDescription=Install Kubernetes.\nAfter=network-online.target\nWants=network-online.target\n\n[Service]\nType=oneshot\nExecStartPre=/usr/bin/chmod 755 /home/deploy/install-kube.sh\nExecStartPre=/usr/bin/chown deploy:deploy /home/deploy/install-kube.sh\nExecStart=/usr/bin/sudo /home/deploy/install-kube.sh\n\n[Install]\nWantedBy=multi-user.target\n",
+        "enabled": true,
+        "name": "env-kube.service"
       }
     ]
   },

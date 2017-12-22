@@ -4,16 +4,8 @@
   gather_facts: False
   vars_files:
     - nsxanswer.yml
-  vars_prompt:
-  - name: "vcenter_pass"
-    prompt: "Enter vCenter password"
-    private: yes
+    - envanswer.yml
   vars:
-    vcenter: "usa1-2-vcenter"
-    datacenter: "Lab-Datacenter"
-    datastore: "vsanDatastore"
-    cluster: "Cluster01"
-    vcenter_user: "administrator@vsphere.local"
     switch_name: "{{ switch }}"
     uplink_pg: "{{ uplink }}"
     ext_ip: "{{ vip }}"
@@ -35,7 +27,7 @@
       hostname: "{{ vcenter }}"
       username: "{{ vcenter_user }}"
       password: "{{ vcenter_pass }}"
-      datacenter_name: "{{ datacenter }}"
+      datacenter_name: "{{ dc }}"
       datastore_name: "{{ datastore }}"
       validate_certs: False
     register: gather_moids_ds
@@ -46,7 +38,7 @@
       hostname: "{{ vcenter }}"
       username: "{{ vcenter_user }}"
       password: "{{ vcenter_pass }}"
-      datacenter_name: "{{ datacenter }}"
+      datacenter_name: "{{ dc }}"
       cluster_name: "{{ cluster }}"
       validate_certs: False
     register: gather_moids_cl
@@ -57,7 +49,7 @@
       hostname: "{{ vcenter }}"
       username: "{{ vcenter_user}}"
       password: "{{ vcenter_pass}}"
-      datacenter_name: "{{ datacenter }}"
+      datacenter_name: "{{ dc }}"
       portgroup_name: "{{ uplink_pg }}"
       validate_certs: False
     register: gather_moids_upl_pg
