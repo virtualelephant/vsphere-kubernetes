@@ -13,7 +13,7 @@
   tasks:
   - name: Check for existing VM folder
     vmware_folder:
-      hostname: "{{ hostname }}"
+      hostname: "{{ vcenter }}"
       username: "{{ vcenter_user }}"
       password: "{{ vcenter_pass }}"
       validate_certs: False
@@ -24,7 +24,7 @@
 
   - name: Create Ubuntu Kubernetes Master VMs
     vmware_guest:
-      hostname: "{{ hostname }}"
+      hostname: "{{ vcenter }}"
       username: "{{ vcenter_user }}"
       password: "{{ vcenter_pass }}"
       validate_certs: False

@@ -1,60 +1,9 @@
 ---
-- hosts: localhost
-  gather_facts: false
-  connection: local
+# main.yml
+# Deploy and configure a complete Kubernetes stack within a VMware vSphere
+# environment that includes VMware NSX.
+#
+# Future: Add creation of required templates.
 
-  vars_files:
-    - envanswer.yml
-
-  vars:
-    num_masters: "{{ masters }}"
-    num_nodes: "{{ nodes }}"
-    folder: "{{ folder }}"
-    vm_prefix: "{{ prefix }}"
-
-  tasks:
-  - name: Check for existing VM folder
-    vmware_folder:
-      hostname: "{{ vcenter }}"
-      username: "{{ vcenter_user }}"
-      password: "{{ vcenter_pass }}"
-      validate_certs: False
-      datacenter: "{{ dc }}"
-      cluster: "{{ cluster_name }}"
-      folder: "{{ folder }}"
-      state: present
-
-  - name: Create Master VMs from blank CoreOS template
-    vmware_guest:
-      hostname: "{{ vcenter }}"
-      username: "{{ vcenter_user }}"
-      password: "{{ vcenter_pass }}"
-      validate_certs: False
-      name: "{{ prefix }}-master-coreos{{ item }}"
-      template: "{{ template }}"
-      datacenter: "{{ dc }}"
-      cluster: "{{ cluster_name }}"
-      state: poweredon
-      folder: "/vm/{{ folder }}"
-    delegate_to: localhost
-    register: createvm
-    with_sequence: start=1 end={{num_masters|int}}
-
-  - name: Create Minion VMs from blank CoreOS template
-    vmware_guest:
-      hostname: "{{ vcenter }}"
-      username: "{{ vcenter_user }}"
-      password: "{{ vcenter_pass }}"
-      validate_certs: False
-      name: "{{ prefix }}-node-coreos{{ item }}"
-      template: "{{ template }}"
-      datacenter: "{{ dc }}"
-      cluster: "{{ cluster_name }}"
-      state: poweredon
-      folder: "/vm/{{ folder }}"
-    delegate_to: localhost
-    register: createvm
-    with_sequence: start=1 end={{num_nodes|int}}
-
-  - debug:
-      var: master_vm_facts.instance
+- import_playbook: kube-master-deploy.yml
+- import_playbook: kube-nodes-deploy.yml
