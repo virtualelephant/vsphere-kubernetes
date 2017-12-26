@@ -1,0 +1,69 @@
+---
+- hosts: localhost
+  gather_facts: false
+  connection: local
+
+  vars_files:
+    - envanswer.yml
+
+  vars:
+    folder: "{{ folder }}"
+    vm_prefix: "{{ prefix }}"
+
+  tasks:
+  - name: Check for existing VM folder
+    vmware_folder:
+      hostname: "{{ vcenter }}"
+      username: "{{ vcenter_user }}"
+      password: "{{ vcenter_pass }}"
+      validate_certs: False
+      datacenter: "{{ dc }}"
+      cluster: "{{ cluster_name }}"
+      folder: "{{ folder }}"
+      state: present
+
+  - name: Create Primary DNS Ubuntu VM
+    vmware_guest:
+      hostname: "{{ vcenter }}"
+      username: "{{ vcenter_user }}"
+      password: "{{ vcenter_pass }}"
+      validate_certs: False
+      name: "{{ prefix }}-dns-1"
+      template: "{{ ubuntu_template }}"
+      datacenter: "{{ dc }}"
+      cluster: "{{ cluster_name }}"
+      folder: "{{ folder }}"
+      networks:
+      - name: "{{ portgroup }}"
+        ip: "{{ dns1_ip }}"
+        netmask: "{{ netmask }}"
+        gateway: "{{ gateway }}"
+        domain: "{{ domain }}"
+        type: static
+      state: poweredon
+      wait_for_ip_address: yes
+    delegate_to: localhost
+    register: createvm
+
+  - name: Create Secondary DNS Ubuntu VM
+    vmware_guest:
+      hostname: "{{ vcenter }}"
+      username: "{{ vcenter_user }}"
+      password: "{{ vcenter_pass }}"
+      validate_certs: False
+      name: "{{ prefix }}-dns-2"
+      template: "{{ ubuntu_template }}"
+      datacenter: "{{ dc }}"
+      cluster: "{{ cluster_name }}"
+      folder: "{{ folder }}"
+      networks:
+      - name: "{{ portgroup }}"
+        ip: "{{ dns2_ip }}"
+        netmask: "{{ netmask }}"
+        gateway: "{{ gateway }}"
+        domain: "{{ domain }}"
+        type: static
+      state: poweredon
+      wait_for_ip_address: yes
+    delegate_to: localhost
+    register: createvm
