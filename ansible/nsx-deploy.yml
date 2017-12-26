@@ -9,6 +9,8 @@
     switch_name: "{{ switch }}"
     uplink_pg: "{{ uplink }}"
     ext_ip: "{{ vip }}"
+    gateway: "{{ gw }}"
+    nsx_admin_pass: "{{ admin_pass }}"
     tz: "tzone"
 
   tasks:
@@ -39,7 +41,7 @@
       username: "{{ vcenter_user }}"
       password: "{{ vcenter_pass }}"
       datacenter_name: "{{ dc }}"
-      cluster_name: "{{ cluster }}"
+      cluster_name: "{{ cluster_name }}"
       validate_certs: False
     register: gather_moids_cl
     tags: esg_create
