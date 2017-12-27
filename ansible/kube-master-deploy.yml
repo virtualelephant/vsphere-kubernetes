@@ -22,18 +22,71 @@
       folder: "{{ folder }}"
       state: present
 
-  - name: Create Ubuntu Kubernetes Master VMs
+  - name: Create primary Ubuntu Kubernetes master VM
     vmware_guest:
       hostname: "{{ vcenter }}"
       username: "{{ vcenter_user }}"
       password: "{{ vcenter_pass }}"
       validate_certs: False
-      name: "{{ prefix }}-master-{{ item }}"
+      name: "{{ prefix }}-master-1"
       template: "{{ ubuntu_template }}"
       datacenter: "{{ dc }}"
       cluster: "{{ cluster_name }}"
       folder: "{{ folder }}"
+      networks:
+      - name: "{{ portgroup }}"
+        ip: "{{ master1_ip }}"
+        netmask: "{{ netmask }}"
+        gateway: "{{ gateway }}"
+        domain: "{{ domain }}"
+        type: static
       state: poweredon
+      wait_for_ip_address: yes
     delegate_to: localhost
     register: createvm
-    with_sequence: start=1 end=3
+
+  - name: Create secondary Ubuntu Kubernetes master VM
+    vmware_guest:
+      hostname: "{{ vcenter }}"
+      username: "{{ vcenter_user }}"
+      password: "{{ vcenter_pass }}"
+      validate_certs: False
+      name: "{{ prefix }}-master-2"
+      template: "{{ ubuntu_template }}"
+      datacenter: "{{ dc }}"
+      cluster: "{{ cluster_name }}"
+      folder: "{{ folder }}"
+      networks:
+      - name: "{{ portgroup }}"
+        ip: "{{ master2_ip }}"
+        netmask: "{{ netmask }}"
+        gateway: "{{ gateway }}"
+        domain: "{{ domain }}"
+        type: static
+      state: poweredon
+      wait_for_ip_address: yes
+    delegate_to: localhost
+    register: createvm
+
+  - name: Create tertiary Ubuntu Kubernetes master VM
+    vmware_guest:
+      hostname: "{{ vcenter }}"
+      username: "{{ vcenter_user }}"
+      password: "{{ vcenter_pass }}"
+      validate_certs: False
+      name: "{{ prefix }}-master-3"
+      template: "{{ ubuntu_template }}"
+      datacenter: "{{ dc }}"
+      cluster: "{{ cluster_name }}"
+      folder: "{{ folder }}"
+      networks:
+      - name: "{{ portgroup }}"
+        ip: "{{ master3_ip }}"
+        netmask: "{{ netmask }}"
+        gateway: "{{ gateway }}"
+        domain: "{{ domain }}"
+        type: static
+      state: poweredon
+      wait_for_ip_address: yes
+    delegate_to: localhost
+    register: createvm
