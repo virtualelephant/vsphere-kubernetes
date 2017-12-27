@@ -1,0 +1,24 @@
+;
+; BIND reverse data file for broadcast zone
+;
+$TTL	604800
+@	IN	SOA	lab.local. root.lab.local. (
+			      3		; Serial
+			 604800		; Refresh
+			  86400		; Retry
+			2419200		; Expire
+			 604800 )	; Negative Cache TTL
+;
+@	IN	NS	kube-bh.lab.local.
+
+1	IN	PTR	kube-router.lab.local.
+2	IN	PTR	kube-bh.lab.local.
+3	IN	PTR	kube-dns-1.lab.local.
+4	IN	PTR	kube-dns-2.lab.local.
+
+; Kubernetes Master Pool
+100	IN	PTR	kube-master-0.lab.local.
+101	IN	PTR	kube-master-1.lab.local.
+102	IN	PTR	kube-master-2.lab.local.
+103	IN	PTR	kube-master-3.lab.local.
+104	IN	PTR	kube-master-4.lab.local.
