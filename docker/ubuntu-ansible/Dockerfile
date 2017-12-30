@@ -29,3 +29,9 @@ RUN \
   cp nsxansible/library/*.py /usr/lib/python2.7/dist-packages/ansible/modules/cloud/vmware/ && \
   git clone https://github.com/openshift/openshift-ansible-contrib && \
   /bin/cp openshift-ansible-contrib/reference-architecture/vmware-ansible/playbooks/library/vmware*.py /usr/lib/python2.7/dist-packages/ansible/modules/cloud/vmware/
+
+# Setup container to properly use SSH bastion host for Ansible
+RUN mkdir /root/.ssh
+RUN chmod 740 /root/.ssh
+COPY config /root/.ssh/config
+COPY ansible.cfg /etc/ansible/

@@ -1,0 +1,11 @@
+[dns]
+kube-dns-1.lab.local
+kube-dns-2.lab.local
+
+[dns:vars]
+ansible_ssh_common_args: '-o ProxyCommand="ssh -W %h:%p -q deploy@usa1-2-vip1.oc.vmware.com"'
+
+[masters]
+kube-master-1.lab.local
+kube-master-2.lab.local
+kube-master-3.lab.local

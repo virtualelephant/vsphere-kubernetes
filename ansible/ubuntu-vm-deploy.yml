@@ -22,6 +22,29 @@
       folder: "{{ folder }}"
       state: present
 
+  - name: Create SSH Bastion Ubuntu VM
+    vmware_guest:
+      hostname: "{{ vcenter }}"
+      username: "{{ vcenter_user }}"
+      password: "{{ vcenter_pass }}"
+      validate_certs: False
+      name: "{{ prefix }}-bastion"
+      template: "{{ ubuntu-template }}"
+      datacenter: "{{ dc }}"
+      cluster: "{{ cluster_name }}"
+      folder: "{{ folder  }}"
+      networks:
+      - name: "{{ portgroup }}"
+        ip: "{{ bastion_ip }}"
+        netmask: "{{ netmask }}"
+        gateway: "{{ gateway }}"
+        domain: "{{ domain }}"
+        type: static
+      state: poweredon
+      wait_for_ip_address: yes
+    delegate_to: localhost
+    register: create_bastion
+
   - name: Create Primary DNS Ubuntu VM
     vmware_guest:
       hostname: "{{ vcenter }}"

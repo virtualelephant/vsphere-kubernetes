@@ -1,0 +1,28 @@
+---
+- hosts: dns
+  gather_facts: false
+
+  tasks:
+  - name: Configure systemd resolved.conf
+    lineinfile:
+      path: /etc/systemd/resolved.conf
+      regexp: '^#DNS='
+      line: 'DNS=10.20.148.1 10.20.148.2'
+    become: true
+    register: systemd
+
+  - name: Restart systemd-resolved service
+    systemd:
+      name: systemd-resolved
+      enabled: yes
+      state: restarted
+    become: true
+
+  - name: Install Docker dependencies
+    apt: name={{item}} state=present
+    with_items:
+      - software-properties-common
+      - curl
+      - ca-certificates
+      - apt-transport-https
+    become: true
