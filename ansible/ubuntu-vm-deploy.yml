@@ -29,7 +29,7 @@
       password: "{{ vcenter_pass }}"
       validate_certs: False
       name: "{{ prefix }}-bastion"
-      template: "{{ ubuntu-template }}"
+      template: "{{ ubuntu_template }}"
       datacenter: "{{ dc }}"
       cluster: "{{ cluster_name }}"
       folder: "{{ folder  }}"
