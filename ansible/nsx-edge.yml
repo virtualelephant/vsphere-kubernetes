@@ -7,10 +7,9 @@
     - envanswer.yml
   vars:
     switch_name: "{{ switch }}"
-    uplink_pg: "{{ uplink }}"
+    uplink: "{{ uplink }}"
     ext_ip: "{{ vip }}"
-    gateway: "{{ gw }}"
-    nsx_admin_pass: "{{ admin_pass }}"
+    default_route: "{{ gw }}"
     tz: "tzone"
 
   tasks:
@@ -46,17 +45,6 @@
     register: gather_moids_cl
     tags: esg_create
 
-  - name: Gather MOID for uplink
-    vcenter_gather_moids:
-      hostname: "{{ vcenter }}"
-      username: "{{ vcenter_user}}"
-      password: "{{ vcenter_pass}}"
-      datacenter_name: "{{ dc }}"
-      portgroup_name: "{{ uplink_pg }}"
-      validate_certs: False
-    register: gather_moids_upl_pg
-    tags: esg_create
-
   - name: NSX Edge creation
     nsx_edge_router:
       nsxmanager_spec: "{{ nsxmanager_spec }}"
@@ -67,12 +55,12 @@
       datastore_moid: "{{ gather_moids_ds.object_id }}"
       datacenter_moid: "{{ gather_moids_cl.datacenter_moid }}"
       interfaces:
-        vnic0: {ip: "{{ ext_ip }}", prefix_len: 26, portgroup_id: "{{ gather_moids_upl_pg.object_id }}", name: 'uplink0', iftype: 'uplink', fence_param: 'ethernet0.filter1.param1=1'}
-        vnic1: {ip: '192.168.0.1', prefix_len: 20, portgroup_id: "{{ switch_name }}", name: 'int0', iftype: 'internal', fence_param: 'ethernet0.filter1.param1=1'}
-      default_gateway: "{{ gateway }}"
+        vnic0: {ip: "{{ ext_ip }}", prefix_len: 26, logical_switch: "{{ uplink }}", name: 'uplink0', iftype: 'uplink', fence_param: 'ethernet0.filter1.param1=1'}
+        vnic1: {ip: '192.168.0.1', prefix_len: 20, logical_switch: "{{ switch_name }}", name: 'int0', iftype: 'internal', fence_param: 'ethernet0.filter1.param1=1'}
+      default_gateway: "{{ default_route }}"
       remote_access: 'true'
       username: 'admin'
-      password: "{{ nsx_admin_pass }}"
+      password: "{{ nsx_pass }}"
       firewall: 'false'
       ha_enabled: 'true'
     register: create_esg
