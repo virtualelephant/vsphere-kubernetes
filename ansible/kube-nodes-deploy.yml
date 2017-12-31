@@ -18,6 +18,16 @@
       folder: "{{ folder }}"
       state: present
 
+  - name: Gather MOID for NSX Logical Switch Portgroup
+    vcenter_gather_moids:
+      hostname: "{{ vcenter }}"
+      username: "{{ vcenter_user }}"
+      password: "{{ vcenter_pass }}"
+      datacenter_name: "{{ dc }}"
+      portgroup_name: "{{ switch_name }}"
+      validate_certs: False
+    register: gather_moids_pg
+
   - name: Create Minion VMs from blank CoreOS template
     vmware_guest:
       hostname: "{{ vcenter }}"
@@ -28,6 +38,8 @@
       template: "{{ coreos_template }}"
       datacenter: "{{ dc }}"
       cluster: "{{ cluster_name }}"
+      networks:
+      - name: " {{ gather_moids_pg.object_name }}"
       state: poweredon
       folder: "/vm/{{ folder }}"
     delegate_to: localhost
