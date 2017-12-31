@@ -1,0 +1,21 @@
+---
+- hosts: localhost
+  connection: local
+  gather_facts: False
+  vars_files:
+    - nsxanswer.yml
+    - envanswer.yml
+  vars:
+    switch_name: "{{ switch }}"
+    tz: "tzone"
+
+  tasks:
+  - name: NSX Logical Switch creation
+    nsx_logical_switch:
+      nsxmanager_spec: "{{ nsxmanager_spec }}"
+      state: present
+      transportzone: "{{ tz }}"
+      name: "{{ switch_name }}"
+      controlplanemode: "UNICAST_MODE"
+      description: "Kubernetes Infra-as-Code Tenant Logical Switch"
+    register: create_logical_switch
