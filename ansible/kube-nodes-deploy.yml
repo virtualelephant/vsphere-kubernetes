@@ -24,7 +24,7 @@
       username: "{{ vcenter_user }}"
       password: "{{ vcenter_pass }}"
       validate_certs: False
-      name: "{{ prefix }}-node-coreos{{ item }}"
+      name: "{{ vm_prefix }}-node-coreos{{ item }}"
       template: "{{ coreos_template }}"
       datacenter: "{{ dc }}"
       cluster: "{{ cluster_name }}"
