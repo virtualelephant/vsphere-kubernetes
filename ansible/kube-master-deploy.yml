@@ -8,7 +8,8 @@
 
   vars:
     folder: "{{ folder }}"
-    vm_prefix: "{{ prefix }}"
+    prefix: "{{ prefix }}"
+    switch_name: "{{ switch }}"
 
   tasks:
   - name: Check for existing VM folder
@@ -22,6 +23,16 @@
       folder: "{{ folder }}"
       state: present
 
+  - name: Gather MOID for NSX Logical Switch Portgroup
+    vcenter_gather_moids:
+      hostname: "{{ vcenter }}"
+      username: "{{ vcenter_user }}"
+      password: "{{ vcenter_pass }}"
+      datacenter_name: "{{ dc }}"
+      portgroup_name: "{{ switch_name }}"
+      validate_certs: False
+    register: gather_moids_pg
+
   - name: Create primary Ubuntu Kubernetes master VM
     vmware_guest:
       hostname: "{{ vcenter }}"
@@ -34,7 +45,7 @@
       cluster: "{{ cluster_name }}"
       folder: "{{ folder }}"
       networks:
-      - name: "{{ portgroup }}"
+      - name: "{{ gather_moids_pg.object_name }}"
         ip: "{{ master1_ip }}"
         netmask: "{{ netmask }}"
         gateway: "{{ gateway }}"
@@ -57,7 +68,7 @@
       cluster: "{{ cluster_name }}"
       folder: "{{ folder }}"
       networks:
-      - name: "{{ portgroup }}"
+      - name: "{{ gather_moids_pg.object_name }}"
         ip: "{{ master2_ip }}"
         netmask: "{{ netmask }}"
         gateway: "{{ gateway }}"
@@ -80,7 +91,7 @@
       cluster: "{{ cluster_name }}"
       folder: "{{ folder }}"
       networks:
-      - name: "{{ portgroup }}"
+      - name: "{{ gather_moids_pg.object_name }}"
         ip: "{{ master3_ip }}"
         netmask: "{{ netmask }}"
         gateway: "{{ gateway }}"
