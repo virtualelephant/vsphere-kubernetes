@@ -34,7 +34,7 @@
       username: "{{ vcenter_user }}"
       password: "{{ vcenter_pass }}"
       validate_certs: False
-      name: "{{ prefix }}-bastion"
+      name: "{{ vm_prefix }}-bastion"
       template: "{{ ubuntu_template }}"
       datacenter: "{{ dc }}"
       cluster: "{{ cluster_name }}"
@@ -57,7 +57,7 @@
       username: "{{ vcenter_user }}"
       password: "{{ vcenter_pass }}"
       validate_certs: False
-      name: "{{ prefix }}-dns-1"
+      name: "{{ vm_prefix }}-dns-1"
       template: "{{ ubuntu_template }}"
       datacenter: "{{ dc }}"
       cluster: "{{ cluster_name }}"
@@ -80,7 +80,7 @@
       username: "{{ vcenter_user }}"
       password: "{{ vcenter_pass }}"
       validate_certs: False
-      name: "{{ prefix }}-dns-2"
+      name: "{{ vm_prefix }}-dns-2"
       template: "{{ ubuntu_template }}"
       datacenter: "{{ dc }}"
       cluster: "{{ cluster_name }}"

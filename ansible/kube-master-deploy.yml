@@ -34,7 +34,7 @@
       username: "{{ vcenter_user }}"
       password: "{{ vcenter_pass }}"
       validate_certs: False
-      name: "{{ prefix }}-master-1"
+      name: "{{ vm_prefix }}-master-1"
       template: "{{ ubuntu_template }}"
       datacenter: "{{ dc }}"
       cluster: "{{ cluster_name }}"
@@ -57,7 +57,7 @@
       username: "{{ vcenter_user }}"
       password: "{{ vcenter_pass }}"
       validate_certs: False
-      name: "{{ prefix }}-master-2"
+      name: "{{ vm_prefix }}-master-2"
       template: "{{ ubuntu_template }}"
       datacenter: "{{ dc }}"
       cluster: "{{ cluster_name }}"
@@ -80,7 +80,7 @@
       username: "{{ vcenter_user }}"
       password: "{{ vcenter_pass }}"
       validate_certs: False
-      name: "{{ prefix }}-master-3"
+      name: "{{ vm_prefix }}-master-3"
       template: "{{ ubuntu_template }}"
       datacenter: "{{ dc }}"
       cluster: "{{ cluster_name }}"
