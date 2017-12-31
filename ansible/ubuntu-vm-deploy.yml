@@ -9,6 +9,7 @@
   vars:
     folder: "{{ folder }}"
     vm_prefix: "{{ prefix }}"
+    switch_name: "{{ switch }}"
 
   tasks:
   - name: Check for existing VM folder
@@ -44,7 +45,7 @@
       cluster: "{{ cluster_name }}"
       folder: "{{ folder  }}"
       networks:
-      - name: "{{ portgroup }}"
+      - name: "{{ gather_moids_pg.object_name }}"
         ip: "{{ bastion_ip }}"
         netmask: "{{ netmask }}"
         gateway: "{{ gateway }}"
@@ -67,7 +68,7 @@
       cluster: "{{ cluster_name }}"
       folder: "{{ folder }}"
       networks:
-      - name: "{{ portgroup }}"
+      - name: "{{ gather_moids_pg.object_name }}"
         ip: "{{ dns1_ip }}"
         netmask: "{{ netmask }}"
         gateway: "{{ gateway }}"
@@ -90,7 +91,7 @@
       cluster: "{{ cluster_name }}"
       folder: "{{ folder }}"
       networks:
-      - name: "{{ portgroup }}"
+      - name: "{{ gather_moids_pg.object_name }}"
         ip: "{{ dns2_ip }}"
         netmask: "{{ netmask }}"
         gateway: "{{ gateway }}"
