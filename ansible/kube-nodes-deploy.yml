@@ -39,7 +39,7 @@
       datacenter: "{{ dc }}"
       cluster: "{{ cluster_name }}"
       networks:
-      - name: " {{ gather_moids_pg.object_name }}"
+      - name: "{{ gather_moids_pg.object_name }}"
       state: poweredon
       folder: "/vm/{{ folder }}"
     delegate_to: localhost
