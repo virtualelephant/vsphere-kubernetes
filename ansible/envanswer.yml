@@ -1,11 +1,19 @@
 vcenter: "vcenter.example.com"
 vcenter_user: "administrator@vsphere.local"
-vcenter_pass: "PASSWORD"
+vcenter_pass: "VC_PASSWORD"
+nsx_pass: "NSX_PASSWORD"
 dc: "Lab-Datacenter"
 coreos_template: "coreos.template"
 ubuntu_template: "ubuntu-17.04.template"
 cluster_name: "Cluster01"
 datastore: "vsanDatastore"
+
+folder: "Kubernetes"
+vm_prefix: "kube"
+switch_name: "kube-internal"
+tz: "tzone"
+
+num_nodes: 5
 
 bastion_ip: "192.168.0.2"
 dns1_ip: "192.168.0.3"
@@ -16,5 +24,8 @@ master3_ip: "192.168.0.103"
 nameserver_ips: "[192.168.0.3,192.168.0.4]"
 netmask: "255.255.240.0"
 gateway: "192.168.0.1"
-portgroup: "vxw-dvs-26-virtualwire-4-sid-5003-k8s-internal"
 domain: "lab.local"
+
+uplink: "external-transport"
+ext_ip: "10.180.138.131"
+default_route: "10.180.138.129"

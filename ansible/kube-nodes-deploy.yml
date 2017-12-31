@@ -6,11 +6,6 @@
   vars_files:
     - envanswer.yml
 
-  vars:
-    num_nodes: "{{ nodes }}"
-    folder: "{{ folder }}"
-    vm_prefix: "{{ prefix }}"
-
   tasks:
   - name: Check for existing VM folder
     vmware_folder:

@@ -5,12 +5,6 @@
   vars_files:
     - nsxanswer.yml
     - envanswer.yml
-  vars:
-    switch_name: "{{ switch }}"
-    uplink: "{{ uplink }}"
-    ext_ip: "{{ vip }}"
-    default_route: "{{ gw }}"
-    tz: "tzone"
 
   tasks:
   - name: NSX Logical Switch creation

@@ -5,9 +5,6 @@
   vars_files:
     - nsxanswer.yml
     - envanswer.yml
-  vars:
-    switch_name: "{{ switch }}"
-    tz: "tzone"
 
   tasks:
   - name: NSX Logical Switch creation

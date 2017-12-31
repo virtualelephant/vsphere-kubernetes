@@ -5,8 +5,6 @@
   vars_files:
     - nsxanswer.yml
     - envanswer.yml
-  vars:
-    switch_name: "{{ switch }}"
 
   tasks:
   - name: Gather MOID for NSX Logical Switch Portgroup
