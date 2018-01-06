@@ -52,6 +52,8 @@
         vnic0: {ip: "{{ ext_ip }}", prefix_len: 26, logical_switch: "{{ uplink }}", name: 'uplink0', iftype: 'uplink', fence_param: 'ethernet0.filter1.param1=1'}
         vnic1: {ip: '192.168.0.1', prefix_len: 20, logical_switch: "{{ switch_name }}", name: 'int0', iftype: 'internal', fence_param: 'ethernet0.filter1.param1=1'}
       default_gateway: "{{ default_route }}"
+      default_gateway_vnic: '0'
+      mtu: '9000'
       remote_access: 'true'
       username: 'admin'
       password: "{{ nsx_pass }}"
