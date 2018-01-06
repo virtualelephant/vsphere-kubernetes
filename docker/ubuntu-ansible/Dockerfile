@@ -24,7 +24,7 @@ RUN \
 
 # Add additional Ansible modules for NSX and VM folders
 RUN \
-  git clone https://github.com/vmware/nsxansible && \
+  git clone https://github.com/virtualelephant/nsxansible && \
   rm -rf nsxansible/library/__init__.py && \
   cp nsxansible/library/*.py /usr/lib/python2.7/dist-packages/ansible/modules/cloud/vmware/ && \
   git clone https://github.com/openshift/openshift-ansible-contrib && \
