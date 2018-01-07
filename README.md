@@ -12,3 +12,8 @@ Blog Posts:
 [Part 3: Getting Started with Ansible](http://virtualelephant.com/2017/11/17/infrastructure-as-code-getting-started-with-ansible/)
 
 [Part 4: Ansible for NSX](http://virtualelephant.com/2017/11/27/infrastructure-as-code-ansible-for-vmware-nsx/)
+
+## Outstanding work
+- Add DHCP capability to NSX Ansible modules and update playbook.
+- Add NAT (DNAT/SNAT) rule creation to NSX Ansible modules and update playbook.
+- Core OS Nodes need to be attached to the corrent VXLAN distributed port group.

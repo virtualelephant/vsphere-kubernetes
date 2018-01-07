@@ -14,7 +14,7 @@
       transportzone: "{{ tz }}"
       name: "{{ switch_name }}"
       controlplanemode: "UNICAST_MODE"
-      description: "Kubernetes Infra-as-Code Tenant Logical Switch"
+      description: "{{ description }}"
     register: create_logical_switch
 
   - name: Gather MOID for datastore for ESG creation
@@ -43,8 +43,8 @@
     nsx_edge_router:
       nsxmanager_spec: "{{ nsxmanager_spec }}"
       state: present
-      name: "{{ switch_name }}-edge"
-      description: "Kubernetes Infra-as-Code Tenant Edge"
+      name: "{{ edge_name }}"
+      description: "{{ description }}"
       resourcepool_moid: "{{ gather_moids_cl.object_id }}"
       datastore_moid: "{{ gather_moids_ds.object_id }}"
       datacenter_moid: "{{ gather_moids_cl.datacenter_moid }}"
@@ -57,7 +57,7 @@
       remote_access: 'true'
       username: 'admin'
       password: "{{ nsx_pass }}"
-      firewall: 'false'
+      firewall: 'true'
       ha_enabled: 'true'
     register: create_esg
     tags: esg_create
