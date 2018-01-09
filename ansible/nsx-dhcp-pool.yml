@@ -1,0 +1,21 @@
+---
+- hosts: localhost
+  connection: local
+  gather_facts: False
+  vars_files:
+    - nsxanswer.yml
+    - envanswer.yml
+
+  tasks:
+  - name: Create DHCP pool on NSX Edge
+    nsx_edge_dhcp:
+      nsxmanager_spec: "{{ nsxmanager_spec }}"
+      name: '{{ edge_name }}'
+      mode: 'create_pool'
+      ip_range: '192.168.1.1-192.168.2.254'
+      subnet: '255.255.240.0'
+      default_gateway: '192.168.0.1'
+      domain_name: 'lab.local'
+      dns_server_1: '192.168.0.3'
+      dns_server_2: '192.168.0.4'
+      lease_time: '3600'
