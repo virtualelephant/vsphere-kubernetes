@@ -1,0 +1,15 @@
+---
+- hosts: localhost
+  connection: local
+  gather_facts: False
+  vars_files:
+    - nsxanswer.yml
+    - envanswer.yml
+
+  tasks:
+  - name: Set default firewall rule policy
+    nsx_edge_firewall:
+      nsxmanager_spec: "{{ nsxmanager_spec }}"
+      mode: 'set_default_action'
+      edge_name: '{{ edge_name }}'
+      default_action: 'accept'
