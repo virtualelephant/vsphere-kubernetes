@@ -59,5 +59,54 @@
       password: "{{ nsx_pass }}"
       firewall: 'true'
       ha_enabled: 'true'
+    ignore_errors: yes
     register: create_esg
     tags: esg_create
+
+  - name: Set default firewall rule policy
+    nsx_edge_firewall:
+      nsxmanager_spec: "{{ nsxmanager_spec }}"
+      mode: 'set_default_action'
+      edge_name: '{{ edge_name }}'
+      default_action: 'accept'
+
+  - name: Create DHCP pool on NSX Edge
+    nsx_edge_dhcp:
+      nsxmanager_spec: "{{ nsxmanager_spec }}"
+      name: '{{ edge_name }}'
+      mode: 'create_pool'
+      ip_range: '{{ ip_range }}'
+      subnet: '{{ netmask }}'
+      default_gateway: '{{ gateway }}'
+      domain_name: '{{ domain }}'
+      dns_server_1: '{{ dns1_ip }}'
+      dns_server_2: '{{ dns2_ip }}'
+      lease_time: '{{ lease_time }}'
+      next_server: '{{ tftp_server }}'
+      bootfile: '{{ bootfile }}'
+
+  - name: Create SSH Bastion host DNAT rule
+    nsx_edge_nat:
+      nsxmanager_spec: '{{ nsxmanager_spec }}'
+      mode: 'create'
+      name: '{{ edge_name }}'
+      rule_type: 'dnat'
+      vnic: '0'
+      protocol: 'tcp'
+      originalAddress: '10.180.138.131'
+      originalPort: '22'
+      translatedAddress: '192.168.0.2'
+      translatedPort: '22'
+
+  - name: Create default outbound SNAT rule
+    nsx_edge_nat:
+      nsxmanager_spec: '{{ nsxmanager_spec }}'
+      mode: 'create'
+      name: '{{ edge_name }}'
+      rule_type: 'snat'
+      vnic: '0'
+      protocol: 'any'
+      originalAddress: '192.168.0.0/20'
+      originalPort: 'any'
+      translatedAddress: '10.180.138.131'
+      translatedPort: 'any'
