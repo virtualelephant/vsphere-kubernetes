@@ -1,6 +1,6 @@
-# Dockerfile for creating an Ansible Control Server with
-# the VMware modules necessary to build a complete Kubernetes
-# stack.
+# Dockerfile for building a complete kubernetes cluster
+# on a VMware vSphere environment with custom Ansible modules
+#
 # Blog details available: http://virtualelphant.com
 
 FROM ubuntu:artful
@@ -30,12 +30,13 @@ RUN \
   git clone https://github.com/openshift/openshift-ansible-contrib && \
   /bin/cp openshift-ansible-contrib/reference-architecture/vmware-ansible/playbooks/library/vmware*.py /usr/lib/python2.7/dist-packages/ansible/modules/cloud/vmware/
 
+# Get virtualelephant/vsphere-kubernetes repo with all the Ansible playbooks
+RUN \
+  mkdir -p /opt/ansible && cd /opt/ansible && \
+  git clone https://github.com/virtualelephant/vsphere-kubernetes
+
 # Setup container to properly use SSH bastion host for Ansible
 RUN mkdir /root/.ssh
 RUN chmod 740 /root/.ssh
 COPY config /root/.ssh/config
 COPY ansible.cfg /etc/ansible/
-
-# Edit MOTD to give container consumer info
-COPY motd /etc/motd
-RUN echo '[ ! -z "$TERM" -a -r /etc/motd ] && cat /etc/issue && cat /etc/motd' >> /etc/bash.bashrc

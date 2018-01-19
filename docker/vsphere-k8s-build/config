@@ -1,0 +1,19 @@
+Host *.lab.local
+  ProxyCommand ssh -W %h:%p bastion.example.com
+  User deploy
+  IdentityFile ~/.ssh/id_rsa
+  StrictHostKeyChecking no
+
+Host 192.168.*.*
+  ProxyCommand ssh -W %h:%p bastion.example.com
+  User deploy
+  IdentityFile ~/.ssh/id_rsa
+  StrictHostKeyChecking no
+
+Host bastion.example.com
+  Hostname bastion.example.com
+  User deploy
+  IdentityFile ~/.ssh/id_rsa
+  ControlMaster auto
+  ControlPath /tmp/ssh-%r@%h:%p
+  ControlPersist 5m
