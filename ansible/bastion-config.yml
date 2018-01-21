@@ -61,16 +61,16 @@
       dest: /var/lib/tftpboot/coreos_production_pxe.vmlinuz.sig
     become: true
 
+  - name: Download CoreOS coreos_production_pxe_image.cpio.gz signature
+    get_url:
+      url: https://stable.release.core-os.net/amd64-usr/current/coreos_production_pxe_image.cpio.gz.sig
+      dest: /var/lib/tftpboot/coreos_production_pxe_image.cpio.gz.sig
+    become: true
+
   - name: Download CoreOS coreos_production_pxe_image.cpio.gz
     get_url:
       url: https://stable.release.core-os.net/amd64-usr/current/coreos_production_pxe_image.cpio.gz
       dest: /var/lib/tftpboot/coreos_production_pxe_image.cpio.gz
-    become: true
-
-  - name: Download CoreOS
-    get_url:
-      url: https://stable.release.core-os.net/amd64-usr/current/coreos_production_pxe_image.cpio.gz.sig
-      dest: /var/lib/tftpboot/coreos_production_pxe_image.cpio.gz.sig
     become: true
 
   - name: Restart tftpd-hpa service
