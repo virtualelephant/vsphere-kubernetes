@@ -22,13 +22,21 @@ RUN \
   npm install -g https://github.com/yfauser/raml2html && \
   npm  install -g raml-fleece
 
+# Get NSXRAML
+
 # Add additional Ansible modules for NSX and VM folders
 RUN \
-  git clone https://github.com/virtualelephant/nsxansible && \
+  git clone -b 6.4 https://github.com/vmware/nsxraml.git /opt/nsxraml && \
+  git clone https://github.com/vmware/nsxansible && \
+  git clone https://github.com/vmware/ansible-modules-extras-gpl3.git && \
   rm -rf nsxansible/library/__init__.py && \
   cp nsxansible/library/*.py /usr/lib/python2.7/dist-packages/ansible/modules/cloud/vmware/ && \
   git clone https://github.com/openshift/openshift-ansible-contrib && \
   /bin/cp openshift-ansible-contrib/reference-architecture/vmware-ansible/playbooks/library/vmware*.py /usr/lib/python2.7/dist-packages/ansible/modules/cloud/vmware/
+
+# Add vSAN Python API modules - must be done after pyVmomi installation
+COPY vsanmgmtObjects.py /usr/lib/python2.7/
+COPY vsanapiutils.py /usr/lib/python2.7/
 
 # Setup container to properly use SSH bastion host for Ansible
 RUN mkdir /root/.ssh
