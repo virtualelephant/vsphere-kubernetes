@@ -1,14 +1,11 @@
 [bastion]
-usa1-2-vip2.oc.vmware.com ansible_user=deploy
+usa1-2-vip1.oc.vmware.com ansible_user=deploy
 
 [dns]
-kube-dns-1.lab.local ansible_host=192.168.0.3
-kube-dns-2.lab.local ansible_host=192.168.0.4
-
-[dns:vars]
-ansible_ssh_common_args: '-o ProxyCommand="ssh -W %h:%p -q deploy@usa1-2-vip2.oc.vmware.com"'
+k8s-dns-1.lab.local ansible_host=192.168.0.3
+k8s-dns-2.lab.local ansible_host=192.168.0.4
 
 [masters]
-kube-master-1.lab.local
-kube-master-2.lab.local
-kube-master-3.lab.local
+k8s-master-1.lab.local
+k8s-master-2.lab.local
+k8s-master-3.lab.local

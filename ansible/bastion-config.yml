@@ -3,19 +3,11 @@
   gather_facts: false
 
   tasks:
-  - name: Configure systemd resolved.conf
-    lineinfile:
-      path: /etc/systemd/resolved.conf
-      regexp: '^#DNS='
-      line: 'DNS=10.20.148.1 10.20.148.2'
-    become: true
-    register: systemd
-
-  - name: Restart systemd-resolved service
+  - name: Disable systemd-resolved service
     systemd:
       name: systemd-resolved
-      enabled: yes
-      state: restarted
+      enabled: no
+      state: stopped
     become: true
 
   - name: Install PXEBOOT dependencies
@@ -30,8 +22,8 @@
 
   - name: Download tftpd-hpa configuration file
     get_url:
-      url: https://s3-us-west-1.amazonaws.com/s3-kube-coreos/pxelinux.cfg
-      dest: /etc/default/tftp-hpa
+      url: https://s3-us-west-1.amazonaws.com/s3-kube-coreos/tftpd-hpa
+      dest: /etc/default/tftpd-hpa
       mode: 0640
     become: true
 

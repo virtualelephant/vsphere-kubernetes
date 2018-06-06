@@ -10,22 +10,22 @@
   - name: Create SSH Bastion host DNAT rule
     nsx_edge_nat:
       nsxmanager_spec: '{{ nsxmanager_spec }}'
-      mode: 'create'
+      mode: 'append'
       name: '{{ edge_name }}'
       description: 'Ansible created inbound SSH'
       loggingEnabled: 'true'
       rule_type: 'dnat'
       vnic: '0'
       protocol: 'tcp'
-      originalAddress: '10.180.138.131'
+      originalAddress: '{{ ext_ip }}'
       originalPort: '22'
-      translatedAddress: '192.168.0.2'
+      translatedAddress: '{{ bastion_ip }}'
       translatedPort: '22'
 
   - name: Create default outbound SNAT rule
     nsx_edge_nat:
       nsxmanager_spec: '{{ nsxmanager_spec }}'
-      mode: 'create'
+      mode: 'append'
       name: '{{ edge_name }}'
       description: 'Ansible created default outbound'
       loggingEnabled: 'true'
@@ -34,5 +34,5 @@
       protocol: 'any'
       originalAddress: '192.168.0.0/20'
       originalPort: 'any'
-      translatedAddress: '10.180.138.131'
+      translatedAddress: '{{ ext_ip }}'
       translatedPort: 'any'
