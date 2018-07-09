@@ -1,6 +1,5 @@
 ---
 Container: virtualelephant/ubuntu-ansible
 Reminder: 
-1. Update ~/.ssh/config file for local environment
-2. Add SSH key file
+- Ansible roles are located in /etc/ansible/roles
 ---
