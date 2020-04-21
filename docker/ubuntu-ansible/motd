@@ -1,5 +1,0 @@
----
-Container: virtualelephant/ubuntu-ansible
-Reminder: 
-- Ansible roles are located in /etc/ansible/roles
----

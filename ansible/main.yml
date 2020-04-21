@@ -5,11 +5,5 @@
 #
 # Future: Add creation of required templates.
 
-- import_playbook: nsx-edge.yml
-- import_playbook: nsx-edge-nat.yml
-- import_playbook: nsx-dhcp-pool.yml
-- import_playbook: ubuntu-vm-deploy.yml
-- import_playbook: bastion-config.yml
-- import_playbook: dns-config.yml
 - import_playbook: kube-master-deploy.yml
-  #- import_playbook: kube-nodes-deploy.yml
+- import_playbook: kube-nodes-deploy.yml

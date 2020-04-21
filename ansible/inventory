@@ -1,11 +1,22 @@
-[bastion]
-usa1-2-vip1.oc.vmware.com ansible_user=deploy
+[cilium-masters]
+cilium-master01.home.virtualelephant.com
+cilium-master02.home.virtualelephant.com
+cilium-master03.home.virtualelephant.com
 
-[dns]
-k8s-dns-1.lab.local ansible_host=192.168.0.3
-k8s-dns-2.lab.local ansible_host=192.168.0.4
+[cilium-nodes]
+cilium-node01.home.virtualelephant.com
+cilium-node02.home.virtualelephant.com
+cilium-node03.home.virtualelephant.com
+cilium-node04.home.virtualelephant.com
+cilium-node05.home.virtualelephant.com
+cilium-node06.home.virtualelephant.com
 
-[masters]
-k8s-master-1.lab.local
-k8s-master-2.lab.local
-k8s-master-3.lab.local
+[kube-masters]
+kube-controller01.home.virtualelephant.com
+kube-controller02.home.virtualelephant.com
+kube-controller03.home.virtualelephant.com
+
+[kube-nodes]
+kube-node01.home.virtualelephant.com
+kube-node02.home.virtualelephant.com
+kube-node03.home.virtualelephant.com

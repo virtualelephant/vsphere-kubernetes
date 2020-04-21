@@ -7,40 +7,17 @@
     - envanswer.yml
 
   tasks:
-  - name: Check for existing VM folder
-    vmware_folder:
-      hostname: "{{ vcenter }}"
-      username: "{{ vcenter_user }}"
-      password: "{{ vcenter_pass }}"
-      validate_certs: False
-      datacenter: "{{ dc }}"
-      cluster: "{{ cluster_name }}"
-      folder: "{{ folder }}"
-      state: present
-
-  - name: Gather MOID for NSX Logical Switch Portgroup
-    vcenter_gather_moids:
-      hostname: "{{ vcenter }}"
-      username: "{{ vcenter_user }}"
-      password: "{{ vcenter_pass }}"
-      datacenter_name: "{{ dc }}"
-      portgroup_name: "{{ switch_name }}"
-      validate_certs: False
-    register: gather_moids_pg
-
-  - name: Create Minion VMs from blank CoreOS template
+  - name: Create Minion VMs from Ubuntu template
     vmware_guest:
       hostname: "{{ vcenter }}"
       username: "{{ vcenter_user }}"
       password: "{{ vcenter_pass }}"
       validate_certs: False
-      name: "{{ vm_prefix }}-node-coreos{{ item }}"
-      template: "{{ coreos_template }}"
+      name: "{{ vm_prefix }}-node0{{ item }}"
+      template: "{{ ubuntu_template }}"
       datacenter: "{{ dc }}"
       cluster: "{{ cluster_name }}"
-      networks:
-      - name: "{{ gather_moids_pg.object_name }}"
-      state: poweredon
+      state: poweredoff
       folder: "/vm/{{ folder }}"
     delegate_to: localhost
     register: createvm

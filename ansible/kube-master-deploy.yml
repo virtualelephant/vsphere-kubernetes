@@ -7,28 +7,7 @@
     - envanswer.yml
 
   tasks:
-  - name: Check for existing VM folder
-    vmware_folder:
-      hostname: "{{ vcenter }}"
-      username: "{{ vcenter_user }}"
-      password: "{{ vcenter_pass }}"
-      validate_certs: False
-      datacenter: "{{ dc }}"
-      cluster: "{{ cluster_name }}"
-      folder: "{{ folder }}"
-      state: present
-
-  - name: Gather MOID for NSX Logical Switch Portgroup
-    vcenter_gather_moids:
-      hostname: "{{ vcenter }}"
-      username: "{{ vcenter_user }}"
-      password: "{{ vcenter_pass }}"
-      datacenter_name: "{{ dc }}"
-      portgroup_name: "{{ switch_name }}"
-      validate_certs: False
-    register: gather_moids_pg
-
-  - name: Create primary Ubuntu Kubernetes master VM
+  - name: Create 1st Ubuntu Kubernetes master VM
     vmware_guest:
       hostname: "{{ vcenter }}"
       username: "{{ vcenter_user }}"
@@ -39,19 +18,11 @@
       datacenter: "{{ dc }}"
       cluster: "{{ cluster_name }}"
       folder: "{{ folder }}"
-      networks:
-      - name: "{{ gather_moids_pg.object_name }}"
-        ip: "{{ master1_ip }}"
-        netmask: "{{ netmask }}"
-        gateway: "{{ gateway }}"
-        domain: "{{ domain }}"
-        type: static
-      state: poweredon
-      wait_for_ip_address: yes
+      state: poweredoff
     delegate_to: localhost
     register: createvm
 
-  - name: Create secondary Ubuntu Kubernetes master VM
+  - name: Create 2nd Ubuntu Kubernetes master VM
     vmware_guest:
       hostname: "{{ vcenter }}"
       username: "{{ vcenter_user }}"
@@ -62,19 +33,11 @@
       datacenter: "{{ dc }}"
       cluster: "{{ cluster_name }}"
       folder: "{{ folder }}"
-      networks:
-      - name: "{{ gather_moids_pg.object_name }}"
-        ip: "{{ master2_ip }}"
-        netmask: "{{ netmask }}"
-        gateway: "{{ gateway }}"
-        domain: "{{ domain }}"
-        type: static
-      state: poweredon
-      wait_for_ip_address: yes
+      state: poweredoff
     delegate_to: localhost
     register: createvm
 
-  - name: Create tertiary Ubuntu Kubernetes master VM
+  - name: Create 3rd Ubuntu Kubernetes master VM
     vmware_guest:
       hostname: "{{ vcenter }}"
       username: "{{ vcenter_user }}"
@@ -85,14 +48,6 @@
       datacenter: "{{ dc }}"
       cluster: "{{ cluster_name }}"
       folder: "{{ folder }}"
-      networks:
-      - name: "{{ gather_moids_pg.object_name }}"
-        ip: "{{ master3_ip }}"
-        netmask: "{{ netmask }}"
-        gateway: "{{ gateway }}"
-        domain: "{{ domain }}"
-        type: static
-      state: poweredon
-      wait_for_ip_address: yes
+      state: poweredoff
     delegate_to: localhost
     register: createvm
