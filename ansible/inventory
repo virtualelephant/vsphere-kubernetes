@@ -1,25 +1,31 @@
-[temporary-ip]
-10.105.1.2
+[all:vars]
+ansible_connection=ssh
+ansible_user: deploy
+ansible_ssh_pass=vagrant
 
-[cilium-masters]
-cilium-controller01.home.virtualelephant.com
-cilium-controller02.home.virtualelephant.com
-cilium-controller03.home.virtualelephant.com
+[temp]
+temp105
+temp104
+
+[cilium-controllers]
+cilium-controller1
+cilium-controller2
+cilium-controller3
 
 [cilium-nodes]
-cilium-node01.home.virtualelephant.com
-cilium-node02.home.virtualelephant.com
-cilium-node03.home.virtualelephant.com
-cilium-node04.home.virtualelephant.com
-cilium-node05.home.virtualelephant.com
-cilium-node06.home.virtualelephant.com
+cilium-node1
+cilium-node2
+cilium-node3
+cilium-node4
+cilium-node5
+cilium-node6
 
 [kube-masters]
-kube-controller01.home.virtualelephant.com
-kube-controller02.home.virtualelephant.com
-kube-controller03.home.virtualelephant.com
+kube-controller1 
+kube-controller2
+kube-controller3
 
 [kube-nodes]
-kube-node01.home.virtualelephant.com
-kube-node02.home.virtualelephant.com
-kube-node03.home.virtualelephant.com
+kube-node1
+kube-node2
+kube-node3
