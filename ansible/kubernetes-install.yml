@@ -1,0 +1,62 @@
+---
+- hosts: cilium-cluster
+  become: yes
+  gather_facts: false
+
+  tasks:
+  - name: Install pre-requisite packages
+    apt:
+      name: ['apt-transport-https', 'ca-certificates', 'software-properties-common']
+      state: present
+
+  - name: Install Docker
+    apt:
+      name: ['docker.io', 'containerd']
+      state: present
+
+  # Configure Docker properly
+  - name: Add deploy user to Docker group
+    user:
+      name: deploy
+      groups: docker
+      append: yes
+
+  - name: Enable and start Docker service
+    systemd:
+      name: docker
+      enabled: yes
+      state: restarted
+
+  - name: Enable and start containerd service
+    systemd:
+      name: containerd
+      enabled: yes
+      state: restarted
+
+  # Install Kubernetes packages
+  - name: Install Kubernetes repo key
+    shell: "curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -"
+
+  - name: Create sources.list file for Kubernetes
+    lineinfile:
+      dest: /etc/apt/sources.list.d/kubernetes.list
+      line: "deb http://apt.kubernetes.io/ kubernetes-xenial main"
+      create: yes
+
+  - name: Update package cache in Ubuntu
+    apt:
+      update_cache: yes
+
+  - name: Install Kubernetes v1.17.0 packages
+    apt:
+      name: ['kubeadm=1.17.0-00', 'kubectl=1.17.0-00', 'kubelet=1.17.0-00', 'kubernetes-cni=0.7.5-00']
+      state: present
+
+  - name: Mark Kubernetes packages to not be upgraded
+    shell: "apt-mark hold kubeadm kubectl kubelet kubernetes-cni"
+
+
+  # Clean-up
+  - name: Auto-clean packages
+    apt:
+      autoclean: yes 

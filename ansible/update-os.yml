@@ -1,0 +1,21 @@
+---
+- hosts: cilium-controllers
+  become: yes
+  gather_facts: false
+
+  tasks:
+  - name: Update package cache in Ubuntu
+    apt:
+      update_cache: yes
+
+  - name: Update Ubuntu distribution
+    apt:
+      upgrade: dist
+
+  - name: Auto-remove unnecessary packages
+    apt:
+      autoremove: yes
+
+  - name: Auto-clean repo packages
+    apt:
+      autoclean: yes
