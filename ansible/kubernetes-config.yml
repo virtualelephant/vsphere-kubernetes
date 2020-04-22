@@ -1,0 +1,26 @@
+---
+- hosts: cilium-controllers
+  gather_facts: false
+  become: yes
+
+  tasks:
+  # Code copied from https://germaniumhq.com/2019/02/14/2019-02-14-Disabling-Swap-for-Kubernetes-in-an-Ansible-Playbook/
+  - name: Disable swap in Ubuntu OS
+    shell: |
+      swapoff -a
+
+  - name: Disable swap in /etc/fstab
+    replace:
+      path: /etc/fstab
+      regexp: '^([^#].*?\sswap\s+sw\s+.*)$'
+      replace: '# \1'
+    register: swapfile
+
+  - name: Reboot node if swapfile changed
+    shell: "shutdown -r now"
+    when: swapfile.changed
+
+  # wait for nodes to reboot
+  - pause:
+      minutes: 3
+    when: swapfile.changed

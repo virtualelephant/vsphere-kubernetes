@@ -21,3 +21,4 @@
 # Base Kubernetes package installation
 - import_playbook: update-os.yml
 - import_playbook: kubernetes-install.yml
+- import_playbook: kubernetes-config.yml
