@@ -1,0 +1,71 @@
+---
+- hosts: localhost
+  gather_facts: false
+  connection: local
+
+  vars_files:
+    - envanswer.yml
+
+  tasks:
+  - name: Delete NIC from Controller VMs
+    vmware_guest_network:
+      hostname: "{{ vcenter }}"
+      username: "{{ vcenter_user }}"
+      password: "{{ vcenter_pass }}"
+      validate_certs: false
+      name: "{{ vm_prefix }}-controller{{ item }}"
+      gather_network_info: false
+      networks:
+        - label: "Network adapter 1"
+          state: absent
+    delegate_to: localhost
+    with_sequence: start=1 end=3
+
+  - name: Add NIC and set to connected for Controller VMs
+    vmware_guest_network:
+      hostname: "{{ vcenter }}"
+      username: "{{ vcenter_user }}"
+      password: "{{ vcenter_pass }}"
+      validate_certs: false
+      name: "{{ vm_prefix }}-controller{{ item }}"
+      gather_network_info: false
+      networks:
+        - device_type: vmxnet3
+          name: "{{ portgroup }}"
+          connected: true
+          start_connected: true
+          state: new
+    delegate_to: localhost
+    with_sequence: start=1 end=3
+
+   - name: Delete NIC from Controller VMs
+    vmware_guest_network:
+      hostname: "{{ vcenter }}"
+      username: "{{ vcenter_user }}"
+      password: "{{ vcenter_pass }}"
+      validate_certs: false
+      name: "{{ vm_prefix }}-node{{ item }}"
+      gather_network_info: false
+      networks:
+        - label: "Network adapter 1"
+          state: absent
+    delegate_to: localhost
+    with_sequence: start=1 end=3
+
+  - name: Add NIC and set to connected for Minion VMs
+    vmware_guest_network:
+      hostname: "{{ vcenter }}"
+      username: "{{ vcenter_user }}"
+      password: "{{ vcenter_pass }}"
+      validate_certs: false
+      name: "{{ vm_prefix }}-node{{ item }}"
+      gather_network_info: false
+      networks:
+        - device_type: vmxnet3
+          name: "{{ portgroup }}"
+          connected: true
+          start_connected: true
+          state: new
+    delegate_to: localhost
+    with_sequence: start=1 end={{num_nodes|int}}
+     

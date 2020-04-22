@@ -7,3 +7,5 @@
 
 - import_playbook: kube-master-deploy.yml
 - import_playbook: kube-nodes-deploy.yml
+- import_playbook: kube-drs-rules.yml
+- import_playbook: vm-config-nics.yml

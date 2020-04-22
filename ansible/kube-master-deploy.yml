@@ -7,47 +7,20 @@
     - envanswer.yml
 
   tasks:
-  - name: Create 1st Ubuntu Kubernetes master VM
+  - name: Create Ubuntu Kubernetes Controller VMs
     vmware_guest:
       hostname: "{{ vcenter }}"
       username: "{{ vcenter_user }}"
       password: "{{ vcenter_pass }}"
       validate_certs: False
-      name: "{{ vm_prefix }}-master-1"
+      name: "{{ vm_prefix }}-controller{{item}}"
       template: "{{ ubuntu_template }}"
       datacenter: "{{ dc }}"
       cluster: "{{ cluster_name }}"
       folder: "{{ folder }}"
+      datastore: "{{ datastore }}"
       state: poweredoff
     delegate_to: localhost
     register: createvm
+    with_sequence: start=1 end=3
 
-  - name: Create 2nd Ubuntu Kubernetes master VM
-    vmware_guest:
-      hostname: "{{ vcenter }}"
-      username: "{{ vcenter_user }}"
-      password: "{{ vcenter_pass }}"
-      validate_certs: False
-      name: "{{ vm_prefix }}-master-2"
-      template: "{{ ubuntu_template }}"
-      datacenter: "{{ dc }}"
-      cluster: "{{ cluster_name }}"
-      folder: "{{ folder }}"
-      state: poweredoff
-    delegate_to: localhost
-    register: createvm
-
-  - name: Create 3rd Ubuntu Kubernetes master VM
-    vmware_guest:
-      hostname: "{{ vcenter }}"
-      username: "{{ vcenter_user }}"
-      password: "{{ vcenter_pass }}"
-      validate_certs: False
-      name: "{{ vm_prefix }}-master-3"
-      template: "{{ ubuntu_template }}"
-      datacenter: "{{ dc }}"
-      cluster: "{{ cluster_name }}"
-      folder: "{{ folder }}"
-      state: poweredoff
-    delegate_to: localhost
-    register: createvm
