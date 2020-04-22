@@ -1,8 +1,3 @@
-[all:vars]
-ansible_connection=ssh
-ansible_user: deploy
-ansible_ssh_pass=vagrant
-
 [temp]
 temp105
 temp104
@@ -20,6 +15,17 @@ cilium-node4
 cilium-node5
 cilium-node6
 
+[cilium-cluster]
+cilium-controller1
+cilium-controller2
+cilium-controller3
+cilium-node1
+cilium-node2
+cilium-node3
+cilium-node4
+cilium-node5
+cilium-node6
+
 [kube-masters]
 kube-controller1 
 kube-controller2
@@ -29,3 +35,9 @@ kube-controller3
 kube-node1
 kube-node2
 kube-node3
+
+[all:vars]
+ansible_connection=ssh
+ansible_user: deploy
+ansible_ssh_pass=thAswU53n-CE
+

@@ -16,9 +16,9 @@
       cluster_name: "{{ cluster_name }}"
       drs_rule_name: "{{ vm_prefix }}-controller-rule"
       vms:
-          - "{{ vm_prefix }}-controller01"
-          - "{{ vm_prefix }}-controller02"
-          - "{{ vm_prefix }}-controller03"
+          - "{{ vm_prefix }}-controller1"
+          - "{{ vm_prefix }}-controller2"
+          - "{{ vm_prefix }}-controller3"
       affinity_rule: False
       enabled: true
       state: present
@@ -33,9 +33,9 @@
       cluster_name: "{{ cluster_name }}"
       drs_rule_name: "{{ vm_prefix }}-minion-rule-1"
       vms:
-          - "{{ vm_prefix }}-node01"
-          - "{{ vm_prefix }}-node02"
-          - "{{ vm_prefix }}-node03"
+          - "{{ vm_prefix }}-node1"
+          - "{{ vm_prefix }}-node2"
+          - "{{ vm_prefix }}-node3"
       affinity_rule: False
       enabled: true
       state: present
@@ -50,9 +50,9 @@
       cluster_name: "{{ cluster_name }}"
       drs_rule_name: "{{ vm_prefix }}-minion-rule-2"
       vms:
-          - "{{ vm_prefix }}-node04"
-          - "{{ vm_prefix }}-node05"
-          - "{{ vm_prefix }}-node06"
+          - "{{ vm_prefix }}-node4"
+          - "{{ vm_prefix }}-node5"
+          - "{{ vm_prefix }}-node6"
       affinity_rule: False
       enabled: true
       state: present

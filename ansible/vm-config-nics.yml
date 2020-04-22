@@ -38,7 +38,7 @@
     delegate_to: localhost
     with_sequence: start=1 end=3
 
-   - name: Delete NIC from Controller VMs
+  - name: Delete NIC from Controller VMs
     vmware_guest_network:
       hostname: "{{ vcenter }}"
       username: "{{ vcenter_user }}"

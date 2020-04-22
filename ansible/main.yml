@@ -1,11 +1,21 @@
 ---
 # main.yml
 # Deploy and configure a complete Kubernetes stack within a VMware vSphere
-# environment that includes VMware NSX.
 #
 # Future: Add creation of required templates.
 
 - import_playbook: kube-master-deploy.yml
 - import_playbook: kube-nodes-deploy.yml
+
+# Optional to create DRS rules
 - import_playbook: kube-drs-rules.yml
+
+# Optional to increase CPU and memory to minions
+- import_playbook: kube-nodes-hw.yml
+
+# Required for network connectivity
 - import_playbook: vm-config-nics.yml
+- import_playbook: workaround-controllers.yml
+- import_playbook: workaround-minions.yml
+
+# Base Kubernetes package installation

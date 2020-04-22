@@ -13,7 +13,7 @@
       username: "{{ vcenter_user }}"
       password: "{{ vcenter_pass }}"
       validate_certs: false
-      name: "{{ vm_prefix }}-node0{{ item }}"
+      name: "{{ vm_prefix }}-node{{ item }}"
       hardware:
         memory_mb: 8192
         num_cpus: 4
