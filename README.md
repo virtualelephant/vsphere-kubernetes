@@ -11,7 +11,10 @@ The vSphere environment requires an Ubuntu 18.04 template to clone the VMs from.
 - kube-nodes-hw.yml: Modifies the CPU and Memory configuration of minion nodes (OPTIONAL)
 - kube-drs-rules.yml: Create DRS anti-affinity rules for controllers and minions (OPTIONAL)
 - vm-config-nics.yml: Properly sets up NIC in each VM, sets it to start connected
-- vm-net-workaround.yml: Workaround for open-vm-tools issue with network configuration
+- workaround-controllers|minions.yml: Workaround for open-vm-tools issue with network configuration
+- kubernetes-install.yml: Base package installation for Kubernetes
+- kubernetes-config.yml: Configuration of Kubernetes controllers and minions
+- update-os.yml: Update Ubuntu OS (OPTIONAL)
 
 ## In Progress
 - Deploy and configure Cilium as the Kubernetes CNI
