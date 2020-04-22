@@ -7,19 +7,16 @@
     - envanswer.yml
 
   tasks:
-  - name: Create Minion VMs from Ubuntu template
+  - name: Increase HW config on Kubernetes minion nodes
     vmware_guest:
       hostname: "{{ vcenter }}"
       username: "{{ vcenter_user }}"
       password: "{{ vcenter_pass }}"
-      validate_certs: False
+      validate_certs: false
       name: "{{ vm_prefix }}-node0{{ item }}"
-      template: "{{ ubuntu_template }}"
-      datacenter: "{{ dc }}"
-      cluster: "{{ cluster_name }}"
-      state: poweredoff
-      folder: "/vm/{{ folder }}"
-      datastore: "{{ datastore }}"
+      hardware:
+        memory_mb: 8192
+        num_cpus: 4
     delegate_to: localhost
-    register: createvm
+    register: update_minion_hw
     with_sequence: start=1 end={{num_nodes|int}}

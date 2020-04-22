@@ -1,3 +1,6 @@
+[temporary-ip]
+10.105.1.2
+
 [cilium-masters]
 cilium-master01.home.virtualelephant.com
 cilium-master02.home.virtualelephant.com

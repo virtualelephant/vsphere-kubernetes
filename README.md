@@ -1,19 +1,11 @@
 # vsphere-kubernetes
-Infrastructure-as-Code Project to deploy a fully-automated Kubernetes environment leveraging VMware vSphere, VMware NSX, Ubuntu, CoreOS and Ansible.
+Infrastructure-as-Code Project to deploy a fully-automated Kubernetes environment leveraging VMware vSphere, Ubuntu,and Ansible.
 
-Blog Posts:
------------
-[Project Overview](http://virtualelephant.com/2017/11/13/infrastructure-as-code-project-overview/)
+## Ansible Playbooks
+- main.yml: Execute entire stand-up of a Kubernetes environment
+- kube-master-deploy.yml: Deploy master or controller nodes for Kubernetes cluster
+- kube-nodes-deploy.yml: Deploy minion nodes for Kubernetes cluster
 
-[Part 1: Bootstrap CoreOS with Ignition](http://virtualelephant.com/2017/11/14/infrastructure-as-code-bootstrap-coreos-with-ignition/)
-
-[Part 2: Understanding CoreOS Ignition](http://virtualelephant.com/2017/11/16/infrastructure-as-code-understanding-coreos-ignition/)
-
-[Part 3: Getting Started with Ansible](http://virtualelephant.com/2017/11/17/infrastructure-as-code-getting-started-with-ansible/)
-
-[Part 4: Ansible for NSX](http://virtualelephant.com/2017/11/27/infrastructure-as-code-ansible-for-vmware-nsx/)
-
-## Outstanding work
-- Add DHCP capability to NSX Ansible modules and update playbook.
-- Add NAT (DNAT/SNAT) rule creation to NSX Ansible modules and update playbook.
-- Core OS Nodes need to be attached to the corrent VXLAN distributed port group.
+## In Progress
+- Deploy and configure Cilium as the Kubernetes CNI
+- Deploy and configure Flannel as the Kubernetes CNI

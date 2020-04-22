@@ -1,0 +1,59 @@
+---
+- hosts: localhost
+  gather_facts: false
+  connection: local
+
+  vars_files:
+    - envanswer.yml
+
+  tasks:
+#  - name: Create Anti-affinity rules for controllers
+#    vmware_vm_vm_drs_rule:
+#      hostname: "{{ vcenter }}"
+#      username: "{{ vcenter_user }}"
+#      password: "{{ vcenter_pass }}"
+#      validate_certs: false
+#      cluster_name: "{{ cluster_name }}"
+#      drs_rule_name: "{{ vm_prefix }}"-controller-rule
+#      vms:
+#          - "{{ vm_prefix }}"-master01
+#          - "{{ vm_prefix }}"-master02
+#          - "{{ vm_prefix }}"-master03
+#      affinity_rule: False
+#      state: present
+#    delegate_to: localhost
+
+  - name: Create Anti-affinity rules for minions
+    vmware_vm_vm_drs_rule:
+      hostname: "{{ vcenter }}"
+      username: "{{ vcenter_user }}"
+      password: "{{ vcenter_pass }}"
+      validate_certs: false
+      cluster_name: "{{ cluster_name }}"
+      drs_rule_name: "{{ vm_prefix }}-minion-rule-1"
+      vms:
+          - "{{ vm_prefix }}-node01"
+          - "{{ vm_prefix }}-node02"
+          - "{{ vm_prefix }}-node03"
+      affinity_rule: False
+      enabled: true
+      state: present
+    delegate_to: localhost
+
+  - name: Create Anti-affinity rules for minions
+    vmware_vm_vm_drs_rule:
+      hostname: "{{ vcenter }}"
+      username: "{{ vcenter_user }}"
+      password: "{{ vcenter_pass }}"
+      validate_certs: false
+      cluster_name: "{{ cluster_name }}"
+      drs_rule_name: "{{ vm_prefix }}-minion-rule-2"
+      vms:
+          - "{{ vm_prefix }}-node04"
+          - "{{ vm_prefix }}-node05"
+          - "{{ vm_prefix }}-node06"
+      affinity_rule: False
+      enabled: true
+      state: present
+    delegate_to: localhost
+
