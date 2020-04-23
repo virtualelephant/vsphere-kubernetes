@@ -6,6 +6,8 @@ The vSphere environment requires an Ubuntu 18.04 template to clone the VMs from.
 
 ## Ansible Playbooks
 - main.yml: Execute entire stand-up of a Kubernetes environment
+- deployment.yml: Overarching playbook for all SDDC & VM deployment components
+- installation.yml: Overarching playbook for all OS and Kubernetes components
 - kube-master-deploy.yml: Deploy master or controller nodes for Kubernetes cluster
 - kube-nodes-deploy.yml: Deploy minion nodes for Kubernetes cluster
 - kube-nodes-hw.yml: Modifies the CPU and Memory configuration of minion nodes (OPTIONAL)
