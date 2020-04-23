@@ -1,0 +1,60 @@
+---
+- hosts: cilium-cluster
+  gather_facts: false
+  become: yes
+
+  vars:
+    cluster_join_command: "./cluster_join.out"
+
+  vars_files:
+    - envanswer.yml
+
+  tasks:
+  - name: Configure BPF mount for Cilium CNI
+    copy:
+      src: files/sys-fs-bpf.mount
+      dest: /etc/systemd/system/sys-fs-bpf.mount
+      owner: root
+      group: root
+      mode: '0644'
+
+  - name: Enable and start sys-fs-bpf.mount service
+    systemd:
+      name: sys-fs-bpf.mount
+      enabled: yes
+      state: restarted
+
+  - block:
+  # Currently only leveraging 1 of 3 controllers
+      - name: Initialize Kubernetes cluster
+        command: "kubeadm init --pod-network-cidr {{ pod_cidr }}"
+        register: kube_init
+
+      - name: Extract the cluster join command
+        command: "kubeadm token create --print-join-command"
+        register: join_command
+
+      - name: Copy join command to minion nodes
+        synchronize:
+          src: "{{ cluster_join_command }}"
+          dest: "{{ cluster_join_command }}"
+
+      - name: Create .kube directory
+        file:
+          path: /home/deploy/.kube
+          state: present
+
+      - name: Configure .kube/config files
+        copy:
+          src: /etc/kubernetes/admin.conf
+          dest: /home/deploy/.kube/config
+          owner: 1000
+          group: 1000
+
+      - name: Install Cilium CNI
+        command: "kubectl create -f https://raw.githubusercontent.com/cilium/cilium/1.7.1/install/kubernetes/quick-install.yaml"
+
+    when: "'controller1' in inventory_hostname"
+      
+
+

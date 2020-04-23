@@ -1,6 +1,6 @@
 vcenter: "vcenter.home.virtualelephant.com"
 vcenter_user: "administrator@vsphere.local"
-vcenter_pass: ""
+vcenter_pass: "PASSWORD"
 dc: "Datacenter"
 ubuntu_template: "Ubuntu-18.04-LTS-v2"
 cluster_name: "R640 Cluster"
@@ -12,3 +12,5 @@ description: "Created through Ansible playbook"
 portgroup: "vlan105"
 
 num_nodes: 6
+
+pod_cidr: "10.244.0.0/16"
