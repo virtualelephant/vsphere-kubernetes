@@ -38,7 +38,7 @@
     delegate_to: localhost
     with_sequence: start=1 end=3
 
-  - name: Delete NIC from Controller VMs
+  - name: Delete NIC from Minion VMs
     vmware_guest_network:
       hostname: "{{ vcenter }}"
       username: "{{ vcenter_user }}"
@@ -50,7 +50,7 @@
         - label: "Network adapter 1"
           state: absent
     delegate_to: localhost
-    with_sequence: start=1 end=3
+    with_sequence: start=1 end={{num_nodes|int}}
 
   - name: Add NIC and set to connected for Minion VMs
     vmware_guest_network:
