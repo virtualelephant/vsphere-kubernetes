@@ -4,6 +4,14 @@
   gather_facts: false
 
   tasks:
+  - name: Auto-clean repo packages
+    apt:
+      autoclean: yes
+
+  - name: Hash mismatch workaround
+    shell: |
+      rm -rf /var/lib/apt/lists/*
+
   - name: Update package cache in Ubuntu
     apt:
       update_cache: yes
@@ -16,6 +24,3 @@
     apt:
       autoremove: yes
 
-  - name: Auto-clean repo packages
-    apt:
-      autoclean: yes

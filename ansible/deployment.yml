@@ -1,9 +1,8 @@
 ---
-# main.yml
-# Deploy and configure a complete Kubernetes stack within a VMware vSphere
+# deployment.yml
+# Deploy Kubernetes VMs inside VMware SDDC
 #
-# Future: Add creation of required templates.
-
+# Clone template to create Kubernetes cluster VMs
 - import_playbook: kube-master-deploy.yml
 - import_playbook: kube-nodes-deploy.yml
 
@@ -17,8 +16,3 @@
 - import_playbook: vm-config-nics.yml
 - import_playbook: workaround-controllers.yml
 - import_playbook: workaround-minions.yml
-
-# Base Kubernetes package installation
-- import_playbook: update-os.yml
-- import_playbook: kubernetes-install.yml
-- import_playbook: kubernetes-config.yml

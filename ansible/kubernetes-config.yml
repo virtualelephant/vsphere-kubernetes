@@ -1,5 +1,5 @@
 ---
-- hosts: cilium-controllers
+- hosts: cilium-cluster
   gather_facts: false
   become: yes
 
@@ -17,10 +17,35 @@
     register: swapfile
 
   - name: Reboot node if swapfile changed
-    shell: "shutdown -r now"
+    reboot:
+      reboot_timeout: 3600
     when: swapfile.changed
 
-  # wait for nodes to reboot
-  - pause:
-      minutes: 3
-    when: swapfile.changed
+- hosts: localhost
+  gather_facts: false
+  connection: local
+
+  vars_files:
+    - envanswer.yml
+
+  tasks:
+  - name: Wait for VMtools to start on controllers
+    vmware_guest_tools_wait:
+      hostname: "{{ vcenter }}"
+      username: "{{ vcenter_user }}"
+      password: "{{ vcenter_pass }}"
+      validate_certs: false
+      name: "{{ vm_prefix }}-controller{{ item }}"
+    delegate_to: localhost
+    with_sequence: start=1 end=3
+
+  - name: Wait for VMtools to start on minions
+    vmware_guest_tools_wait:
+      hostname: "{{ vcenter }}"
+      username: "{{ vcenter_user }}"
+      password: "{{ vcenter_pass }}"
+      validate_certs: false
+      name: "{{ vm_prefix }}-node{{ item }}"
+    delegate_to: localhost
+    with_sequence: start=1 end={{num_nodes|int}}
+

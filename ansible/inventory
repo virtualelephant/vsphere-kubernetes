@@ -40,4 +40,3 @@ kube-node3
 ansible_connection=ssh
 ansible_user: deploy
 ansible_ssh_pass=thAswU53n-CE
-
