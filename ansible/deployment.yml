@@ -13,6 +13,6 @@
 - import_playbook: kube-nodes-hw.yml
 
 # Required for network connectivity
-- import_playbook: vm-config-nics.yml
-- import_playbook: workaround-controllers.yml
-- import_playbook: workaround-minions.yml
+- import_playbook: workaround-nics.yml
+- import_playbook: config-ip-controllers.yml
+- import_playbook: config-ip-minions.yml

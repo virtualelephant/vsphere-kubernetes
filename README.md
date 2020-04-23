@@ -11,8 +11,8 @@ The vSphere environment requires an Ubuntu 18.04 template to clone the VMs from.
 - kube-nodes-deploy.yml: Deploy minion nodes for Kubernetes cluster
 - kube-nodes-hw.yml: Modifies the CPU and Memory configuration of minion nodes (OPTIONAL)
 - kube-drs-rules.yml: Create DRS anti-affinity rules for controllers and minions (OPTIONAL)
-- vm-config-nics.yml: Properly sets up NIC in each VM, sets it to start connected
-- workaround-controllers|minions.yml: Workaround for open-vm-tools issue with network configuration
+- workaround-nics.yml: Properly sets up NIC in each VM, sets it to start connected
+- config-ip-controllers|minions.yml: Workaround for open-vm-tools issue with network configuration
 - kubernetes-install.yml: Base package installation for Kubernetes
 - kubernetes-config.yml: Configuration of Kubernetes controllers and minions
 - update-os.yml: Update Ubuntu OS (OPTIONAL)
