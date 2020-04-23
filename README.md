@@ -5,7 +5,6 @@ Infrastructure-as-Code Project to deploy a fully-automated Kubernetes environmen
 The vSphere environment requires an Ubuntu 18.04 template to clone the VMs from.
 
 ## Ansible Playbooks
-- main.yml: Execute entire stand-up of a Kubernetes environment
 - deployment.yml: Overarching playbook for all SDDC & VM deployment components
 - installation.yml: Overarching playbook for all OS and Kubernetes components
 - kube-master-deploy.yml: Deploy master or controller nodes for Kubernetes cluster
