@@ -40,6 +40,7 @@
     apt:
       autoremove: yes
 
+  # https://www.cyberciti.biz/faq/ansible-apt-update-all-packages-on-ubuntu-debian-linux/
   - name: Check if a reboot is needed on VMs
     register: reboot_required_file
     stat: path=/var/run/reboot-required get_md5=no
