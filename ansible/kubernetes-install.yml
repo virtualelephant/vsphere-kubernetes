@@ -6,7 +6,7 @@
   tasks:
   - name: Install pre-requisite packages
     apt:
-      name: ['apt-transport-https', 'ca-certificates', 'software-properties-common']
+      name: ['apt-transport-https', 'gnupg2', 'ca-certificates', 'software-properties-common']
       state: present
 
   - name: Install Docker
@@ -40,8 +40,17 @@
   - name: Create sources.list file for Kubernetes
     lineinfile:
       dest: /etc/apt/sources.list.d/kubernetes.list
-      line: "deb http://apt.kubernetes.io/ kubernetes-xenial main"
+      line: "deb https://apt.kubernetes.io/ kubernetes-xenial main"
       create: yes
+
+  # Apt hash sum mismatch errors continue to plague reliability of playbook to complete
+  - name: Clean cache repo before updating
+    apt:
+      autoclean: yes
+
+  - name: Cleaning /var/lib/apt/lists
+    shell: |
+       rm -rf /var/lib/apt/lists/*
 
   - name: Update package cache in Ubuntu
     apt:

@@ -1,14 +1,27 @@
 ---
-- hosts: cilium-controllers
+- hosts: cilium-cluster
   become: yes
   gather_facts: false
 
   tasks:
+  # Workaround for hash sum mismatch errors
+  - name: Acquire::By-Hash for apt
+    lineinfile:
+      dest: /etc/apt/apt.conf.d/99acquire-hash
+      line: "Acquire::By-Hash \"yes\";"
+      create: yes
+
+  - name: Acquire::CompressionTypes for apt
+    lineinfile:
+      dest: /etc/apt/apt.conf.d/99acquire-compression
+      line: "Acquire::CompressionTypes::Order:: \"gz\";"
+      create: yes
+     
   - name: Auto-clean repo packages
     apt:
       autoclean: yes
 
-  - name: Hash mismatch workaround
+  - name: 
     shell: |
       rm -rf /var/lib/apt/lists/*
 

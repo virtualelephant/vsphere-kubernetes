@@ -41,13 +41,13 @@
 
       - name: Create .kube directory
         file:
-          path: /home/deploy/.kube
+          path: "{{ home_dir }}/.kube"
           state: present
 
       - name: Configure .kube/config files
         copy:
           src: /etc/kubernetes/admin.conf
-          dest: /home/deploy/.kube/config
+          dest: "{{ home_dir }}/.kube/config"
           owner: 1000
           group: 1000
 
@@ -56,5 +56,3 @@
 
     when: "'controller1' in inventory_hostname"
       
-
-

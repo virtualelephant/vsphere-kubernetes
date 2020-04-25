@@ -33,10 +33,12 @@
 
 - hosts: temp105
   gather_facts: false
+  vars_files:
+    - envanswer.yml
 
   tasks:
   - name: Update IP address in /etc/netplan/50-cloud-init.yaml
-    shell: sed -i 's/- 10.105.0.2\/24/- 10.105.0.11\/24/g' /etc/netplan/50-cloud-init.yaml
+    shell: sed -i 's/- 10.105.0.2\/24/- {{ vm_cidr}}.11\/24/g' /etc/netplan/50-cloud-init.yaml
     become: yes
 
   - name: Update hostname
@@ -96,10 +98,12 @@
 
 - hosts: temp105
   gather_facts: false
+  vars_files:
+    - envanswer.yml
 
   tasks:
   - name: Update IP address in /etc/netplan/50-cloud-init.yaml
-    shell: sed -i 's/- 10.105.0.2\/24/- 10.105.0.12\/24/g' /etc/netplan/50-cloud-init.yaml
+    shell: sed -i 's/- 10.105.0.2\/24/- {{ vm_cidr }}.12\/24/g' /etc/netplan/50-cloud-init.yaml
     become: yes
 
   - name: Update hostname
@@ -158,10 +162,12 @@
 
 - hosts: temp105
   gather_facts: false
+  vars_files:
+    - envanswer.yml
 
   tasks:
   - name: Update IP address in /etc/netplan/50-cloud-init.yaml
-    shell: sed -i 's/- 10.105.0.2\/24/- 10.105.0.13\/24/g' /etc/netplan/50-cloud-init.yaml
+    shell: sed -i 's/- 10.105.0.2\/24/- {{ vm_cidr}}.13\/24/g' /etc/netplan/50-cloud-init.yaml
     become: yes
 
   - name: Update hostname
@@ -220,10 +226,12 @@
 
 - hosts: temp105
   gather_facts: false
+  vars_files:
+    - envanswer.yml
 
   tasks:
   - name: Update IP address in /etc/netplan/50-cloud-init.yaml
-    shell: sed -i 's/- 10.105.0.2\/24/- 10.105.0.14\/24/g' /etc/netplan/50-cloud-init.yaml
+    shell: sed -i 's/- 10.105.0.2\/24/- {{ vm_cidr}}.14\/24/g' /etc/netplan/50-cloud-init.yaml
     become: yes
 
   - name: Update hostname
@@ -282,10 +290,12 @@
 
 - hosts: temp105
   gather_facts: false
+  vars_files:
+    - envanswer.yml
 
   tasks:
   - name: Update IP address in /etc/netplan/50-cloud-init.yaml
-    shell: sed -i 's/- 10.105.0.2\/24/- 10.105.0.15\/24/g' /etc/netplan/50-cloud-init.yaml
+    shell: sed -i 's/- 10.105.0.2\/24/- {{ vm_cidr }}.15\/24/g' /etc/netplan/50-cloud-init.yaml
     become: yes
 
   - name: Update hostname
@@ -344,10 +354,12 @@
 
 - hosts: temp105
   gather_facts: false
+  vars_files:
+    - envanswer.yml
 
   tasks:
   - name: Update IP address in /etc/netplan/50-cloud-init.yaml
-    shell: sed -i 's/- 10.105.0.2\/24/- 10.105.0.16\/24/g' /etc/netplan/50-cloud-init.yaml
+    shell: sed -i 's/- 10.105.0.2\/24/- {{ vm_cidr}}.16\/24/g' /etc/netplan/50-cloud-init.yaml
     become: yes
 
   - name: Update hostname
@@ -380,5 +392,4 @@
       validate_certs: false
       name: "{{ vm_prefix }}-node6"
     delegate_to: localhost
-
 
