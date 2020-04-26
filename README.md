@@ -17,9 +17,7 @@ The vSphere environment requires an Ubuntu 18.04 template to clone the VMs from.
 - installation.yml: Overarching playbook for all OS and Kubernetes components
 - kubernetes-install.yml: Base package installation for Kubernetes
 - disable-swap.yml: Disable swap partition on Kubernetes controllers and minions
-- update-os.yml: Update Ubuntu OS (OPTIONAL)
-- cilium-install.yml: Initialize Kubernetes & install Cilium CNI
+- update-os.yml: Update Ubuntu OS
+- cilium-install.yml: Initialize Kubernetes & install Cilium CNI (OPTIONAL)
+- flannel-install.yml: Initialize Kubernetes & install Flannel CNI (OPTIONAL)
 
-## In Progress
-- Deploy and configure Cilium as the Kubernetes CNI
-- Deploy and configure Flannel as the Kubernetes CNI
