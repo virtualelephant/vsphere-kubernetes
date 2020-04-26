@@ -6,12 +6,28 @@
   tasks:
   - name: Install pre-requisite packages
     apt:
-      name: ['apt-transport-https', 'gnupg2', 'ca-certificates', 'software-properties-common']
+      name: ['apt-transport-https', 'gnupg', 'ca-certificates', 'curl', 'software-properties-common']
+      force_apt_get: yes
       state: present
+
+  - name: Get Docker GPG key
+    shell: "curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -"
+
+  - name: Add Docker repo
+    lineinfile:
+      dest: /etc/apt/sources.list.d/docker.list
+      line: "deb https://download.docker.com/linux/ubuntu bionic stable"
+      create: yes
+
+  - name: Update repo for Docker
+    apt:
+      update_cache: yes
+      force_apt_get: yes
 
   - name: Install Docker
     apt:
-      name: ['docker.io', 'containerd']
+      name: ['docker-ce']
+      force_apt_get: yes
       state: present
 
   # Configure Docker properly
@@ -24,12 +40,6 @@
   - name: Enable and start Docker service
     systemd:
       name: docker
-      enabled: yes
-      state: restarted
-
-  - name: Enable and start containerd service
-    systemd:
-      name: containerd
       enabled: yes
       state: restarted
 
@@ -55,10 +65,12 @@
   - name: Update package cache in Ubuntu
     apt:
       update_cache: yes
+      force_apt_get: yes
 
   - name: Install Kubernetes v1.17.0 packages
     apt:
       name: ['kubeadm=1.17.0-00', 'kubectl=1.17.0-00', 'kubelet=1.17.0-00', 'kubernetes-cni=0.7.5-00']
+      force_apt_get: yes
       state: present
 
   - name: Mark Kubernetes packages to not be upgraded

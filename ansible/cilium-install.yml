@@ -4,7 +4,7 @@
   become: yes
 
   vars:
-    cluster_join_command: "./cluster_join.out"
+    join_command_location: "{{ home_dir }}/git/vsphere-kubernetes/ansible/files/cluster_join.out"
 
   vars_files:
     - envanswer.yml
@@ -34,25 +34,40 @@
         command: "kubeadm token create --print-join-command"
         register: join_command
 
-      - name: Copy join command to minion nodes
-        synchronize:
-          src: "{{ cluster_join_command }}"
-          dest: "{{ cluster_join_command }}"
-
       - name: Create .kube directory
         file:
           path: "{{ home_dir }}/.kube"
-          state: present
+          state: directory
+          owner: 1000
+          group: 1000
 
       - name: Configure .kube/config files
         copy:
           src: /etc/kubernetes/admin.conf
           dest: "{{ home_dir }}/.kube/config"
+          remote_src: yes
           owner: 1000
           group: 1000
 
+      - pause:
+          minutes: 1
+
       - name: Install Cilium CNI
-        command: "kubectl create -f https://raw.githubusercontent.com/cilium/cilium/1.7.1/install/kubernetes/quick-install.yaml"
+        shell: "kubectl create -f https://raw.githubusercontent.com/cilium/cilium/1.7.1/install/kubernetes/quick-install.yaml"
+
+      - name: Save kubeadm join command for cluster
+        local_action: copy content={{ join_command.stdout_lines | last | trim }} dest={{ join_command_location }}
+
+      - pause:
+          minutes: 5
+
+      - name: Copy join command to minion nodes
+        copy:
+          src: "{{ join_command_location }}"
+          dest: "{{ home_dir }}/"
+          owner: 1000
+          group: 1000
+          mode: '0644'
 
     when: "'controller1' in inventory_hostname"
       

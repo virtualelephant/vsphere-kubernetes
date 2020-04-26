@@ -1,16 +1,21 @@
+# VMware SDDC information
 vcenter: "vcenter.home.virtualelephant.com"
 vcenter_user: "administrator@vsphere.local"
 vcenter_pass: "PASSWORD"
 dc: "Datacenter"
-ubuntu_template: "Ubuntu-18.04-LTS-v2"
-cluster_name: "R640 Cluster"
+cluster_name: "R630 Cluster"
 datastore: "syn-lun4"
+portgroup: "vlan105"
+
+ubuntu_template: "Ubuntu-18.04-LTS-v2"
 
 folder: "Cilium"
 vm_prefix: "cilium"
-description: "Created through Ansible playbook"
-portgroup: "vlan105"
+
+vm_cidr: "10.105.0"
 
 num_nodes: 6
 
+# Kubernetes / OS information
 pod_cidr: "10.244.0.0/16"
+home_dir: "/home/deploy"
