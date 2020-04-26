@@ -52,8 +52,16 @@
       - pause:
           minutes: 1
 
+#      - name: Download Cilium quick-install.yaml
+#        get_url:
+#          url: https://raw.githubusercontent.com/cilium/cilium/1.7.1/install/kubernetes/quick-install.yaml
+#          dest: "{{ home_dir }}/quick-install.yaml"
+#        become: no
+
       - name: Install Cilium CNI
-        shell: "kubectl create -f https://raw.githubusercontent.com/cilium/cilium/1.7.1/install/kubernetes/quick-install.yaml"
+        raw: kubectl create -f https://raw.githubusercontent.com/cilium/cilium/1.7.1/install/kubernetes/quick-install.yaml
+        become: no
+        register: cilium_init
 
       - name: Save kubeadm join command for cluster
         local_action: copy content={{ join_command.stdout_lines | last | trim }} dest={{ join_command_location }}
@@ -70,4 +78,13 @@
           mode: '0644'
 
     when: "'controller1' in inventory_hostname"
+
+  - name: Read join command on minion nodes
+    debug: msg={{ lookup('file', join_command_location) }}
+    register: join_command_local
+    when: "'node' in inventory_hostname"
+
+  - name: Join minions to Kubernetes cluster
+    command: "{{ join_command_local.msg }}"
+    when: "'node' in inventory_hostname"
       
