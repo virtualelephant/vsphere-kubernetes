@@ -52,10 +52,10 @@
       - pause:
           minutes: 1
 
-      - name: Install Cilium CNI
-        raw: kubectl create -f https://raw.githubusercontent.com/cilium/cilium/1.7.1/install/kubernetes/quick-install.yaml
+      - name: Install Flannel CNI
+        raw: kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/k8s-manifests/kube-flannel-rbac.yml
         become: no
-        register: cilium_init
+        register: flannel_init
 
       - name: Save kubeadm join command for cluster
         local_action: copy content={{ join_command.stdout_lines | last | trim }} dest={{ join_command_location }}
