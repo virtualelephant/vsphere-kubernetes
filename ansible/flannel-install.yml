@@ -1,5 +1,5 @@
 ---
-- hosts: cilium-cluster
+- hosts: kube-cluster
   gather_facts: false
   become: yes
 
@@ -10,19 +10,6 @@
     - envanswer.yml
 
   tasks:
-  - name: Configure BPF mount for Cilium CNI
-    copy:
-      src: files/sys-fs-bpf.mount
-      dest: /etc/systemd/system/sys-fs-bpf.mount
-      owner: root
-      group: root
-      mode: '0644'
-
-  - name: Enable and start sys-fs-bpf.mount service
-    systemd:
-      name: sys-fs-bpf.mount
-      enabled: yes
-      state: restarted
 
   - block:
   # Currently only leveraging 1 of 3 controllers
@@ -53,7 +40,7 @@
           minutes: 1
 
       - name: Install Flannel CNI
-        raw: kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/k8s-manifests/kube-flannel-rbac.yml
+        raw: kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
         become: no
         register: flannel_init
 

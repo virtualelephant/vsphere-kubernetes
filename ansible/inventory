@@ -35,6 +35,20 @@ kube-controller3
 kube-node1
 kube-node2
 kube-node3
+kube-node4
+kube-node5
+kube-node6
+
+[kube-cluster]
+kube-controller1
+kube-controller2
+kube-controller3
+kube-node1
+kube-node2
+kube-node3
+kube-node4
+kube-node5
+kube-node6
 
 [all:vars]
 ansible_connection=ssh

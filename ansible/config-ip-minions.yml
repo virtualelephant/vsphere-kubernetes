@@ -31,18 +31,18 @@
   - pause:
       minutes: 1
 
-- hosts: temp105
+- hosts: "{{ temp_vm }}"
   gather_facts: false
   vars_files:
     - envanswer.yml
 
   tasks:
   - name: Update IP address in /etc/netplan/50-cloud-init.yaml
-    shell: sed -i 's/- 10.105.0.2\/24/- {{ vm_cidr}}.11\/24/g' /etc/netplan/50-cloud-init.yaml
+    shell: sed -i 's/- {{ vm_cidr }}.2\/24/- {{ vm_cidr}}.11\/24/g' /etc/netplan/50-cloud-init.yaml
     become: yes
 
   - name: Update hostname
-    shell: hostnamectl set-hostname cilium-node1.home.virtualelephant.com
+    shell: hostnamectl set-hostname '{{ vm_prefix }}'-node1.home.virtualelephant.com
     become: yes
 
 - hosts: localhost
@@ -96,18 +96,18 @@
   - pause:
       minutes: 1
 
-- hosts: temp105
+- hosts: "{{ temp_vm }}"
   gather_facts: false
   vars_files:
     - envanswer.yml
 
   tasks:
   - name: Update IP address in /etc/netplan/50-cloud-init.yaml
-    shell: sed -i 's/- 10.105.0.2\/24/- {{ vm_cidr }}.12\/24/g' /etc/netplan/50-cloud-init.yaml
+    shell: sed -i 's/- {{ vm_cidr }}.2\/24/- {{ vm_cidr }}.12\/24/g' /etc/netplan/50-cloud-init.yaml
     become: yes
 
   - name: Update hostname
-    shell: hostnamectl set-hostname cilium-node2.home.virtualelephant.com
+    shell: hostnamectl set-hostname '{{ vm_prefix }}'-node2.home.virtualelephant.com
     become: yes
 
 - hosts: localhost
@@ -160,18 +160,18 @@
   - pause:
       minutes: 1
 
-- hosts: temp105
+- hosts: "{{ temp_vm }}"
   gather_facts: false
   vars_files:
     - envanswer.yml
 
   tasks:
   - name: Update IP address in /etc/netplan/50-cloud-init.yaml
-    shell: sed -i 's/- 10.105.0.2\/24/- {{ vm_cidr}}.13\/24/g' /etc/netplan/50-cloud-init.yaml
+    shell: sed -i 's/- {{ vm_cidr }}.2\/24/- {{ vm_cidr}}.13\/24/g' /etc/netplan/50-cloud-init.yaml
     become: yes
 
   - name: Update hostname
-    shell: hostnamectl set-hostname cilium-node3.home.virtualelephant.com
+    shell: hostnamectl set-hostname '{{ vm_prefix }}'-node3.home.virtualelephant.com
     become: yes
 
 - hosts: localhost
@@ -224,18 +224,18 @@
   - pause:
       minutes: 1
 
-- hosts: temp105
+- hosts: "{{ temp_vm }}"
   gather_facts: false
   vars_files:
     - envanswer.yml
 
   tasks:
   - name: Update IP address in /etc/netplan/50-cloud-init.yaml
-    shell: sed -i 's/- 10.105.0.2\/24/- {{ vm_cidr}}.14\/24/g' /etc/netplan/50-cloud-init.yaml
+    shell: sed -i 's/- {{ vm_cidr }}.2\/24/- {{ vm_cidr}}.14\/24/g' /etc/netplan/50-cloud-init.yaml
     become: yes
 
   - name: Update hostname
-    shell: hostnamectl set-hostname cilium-node4.home.virtualelephant.com
+    shell: hostnamectl set-hostname '{{ vm_prefix }}'-node4.home.virtualelephant.com
     become: yes
 
 - hosts: localhost
@@ -288,18 +288,18 @@
   - pause:
       minutes: 1
 
-- hosts: temp105
+- hosts: "{{ temp_vm }}"
   gather_facts: false
   vars_files:
     - envanswer.yml
 
   tasks:
   - name: Update IP address in /etc/netplan/50-cloud-init.yaml
-    shell: sed -i 's/- 10.105.0.2\/24/- {{ vm_cidr }}.15\/24/g' /etc/netplan/50-cloud-init.yaml
+    shell: sed -i 's/- {{ vm_cidr }}.2\/24/- {{ vm_cidr }}.15\/24/g' /etc/netplan/50-cloud-init.yaml
     become: yes
 
   - name: Update hostname
-    shell: hostnamectl set-hostname cilium-node5.home.virtualelephant.com
+    shell: hostnamectl set-hostname '{{ vm_prefix }}'-node5.home.virtualelephant.com
     become: yes
 
 - hosts: localhost
@@ -352,18 +352,18 @@
   - pause:
       minutes: 1
 
-- hosts: temp105
+- hosts: "{{ temp_vm }}"
   gather_facts: false
   vars_files:
     - envanswer.yml
 
   tasks:
   - name: Update IP address in /etc/netplan/50-cloud-init.yaml
-    shell: sed -i 's/- 10.105.0.2\/24/- {{ vm_cidr}}.16\/24/g' /etc/netplan/50-cloud-init.yaml
+    shell: sed -i 's/- {{ vm_cidr }}.2\/24/- {{ vm_cidr}}.16\/24/g' /etc/netplan/50-cloud-init.yaml
     become: yes
 
   - name: Update hostname
-    shell: hostnamectl set-hostname cilium-node6.home.virtualelephant.com
+    shell: hostnamectl set-hostname '{{ vm_prefix }}'-node6.home.virtualelephant.com
     become: yes
 
 - hosts: localhost

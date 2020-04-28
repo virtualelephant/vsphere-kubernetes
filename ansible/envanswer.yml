@@ -5,14 +5,23 @@ vcenter_pass: "PASSWORD"
 dc: "Datacenter"
 cluster_name: "R630 Cluster"
 datastore: "syn-lun4"
-portgroup: "vlan105"
 
-ubuntu_template: "Ubuntu-18.04-LTS-v2"
 
-folder: "Cilium"
-vm_prefix: "cilium"
+# Cilium Cluster
+#folder: "Cilium"
+#vm_prefix: "cilium"
+#ubuntu_template: "Ubuntu-18.04-LTS-v2"
+#temp_vm: "temp105"
+#portgroup: "vlan105"
+#vm_cidr: "10.105.0"
 
-vm_cidr: "10.105.0"
+# Flannel Cluster
+folder: "Kubernetes"
+vm_prefix: "kube"
+ubuntu_template: "Ubuntu-18.04-LTS-v104"
+temp_vm: "temp104"
+portgroup: "vlan104"
+vm_cidr: "10.104.0"
 
 num_nodes: 6
 

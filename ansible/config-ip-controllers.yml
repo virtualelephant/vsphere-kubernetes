@@ -31,18 +31,18 @@
   - pause:
       minutes: 1
 
-- hosts: temp105
+- hosts: "{{ temp_vm }}"
   gather_facts: false
   vars_files:
     - envanswer.yml
 
   tasks:
   - name: Update IP address in /etc/netplan/50-cloud-init.yaml
-    shell: sed -i 's/- 10.105.0.2\/24/- {{ vm_cidr }}.5\/24/g' /etc/netplan/50-cloud-init.yaml
+    shell: sed -i 's/- {{ vm_cidr }}.2\/24/- {{ vm_cidr }}.5\/24/g' /etc/netplan/50-cloud-init.yaml
     become: yes
 
   - name: Update hostname
-    shell: hostnamectl set-hostname cilium-controller1.home.virtualelephant.com
+    shell: hostnamectl set-hostname '{{ vm_prefix }}'-controller1.home.virtualelephant.com
     become: yes
 
 - hosts: localhost
@@ -96,18 +96,18 @@
   - pause:
       minutes: 1
 
-- hosts: temp105
+- hosts: "{{ temp_vm }}"
   gather_facts: false
   vars_files:
     - envanswer.yml
 
   tasks:
   - name: Update IP address in /etc/netplan/50-cloud-init.yaml
-    shell: sed -i 's/- 10.105.0.2\/24/- {{ vm_cidr }}.6\/24/g' /etc/netplan/50-cloud-init.yaml
+    shell: sed -i 's/- {{ vm_cidr }}.2\/24/- {{ vm_cidr }}.6\/24/g' /etc/netplan/50-cloud-init.yaml
     become: yes
 
   - name: Update hostname
-    shell: hostnamectl set-hostname cilium-controller2.home.virtualelephant.com
+    shell: hostnamectl set-hostname '{{ vm_prefix }}'-controller2.home.virtualelephant.com
     become: yes
 
 - hosts: localhost
@@ -160,18 +160,18 @@
   - pause:
       minutes: 1
 
-- hosts: temp105
+- hosts: "{{ temp_vm }}"
   gather_facts: false
   vars_files:
     - envanswer.yml
 
   tasks:
   - name: Update IP address in /etc/netplan/50-cloud-init.yaml
-    shell: sed -i 's/- 10.105.0.2\/24/- {{ vm_cidr }}.7\/24/g' /etc/netplan/50-cloud-init.yaml
+    shell: sed -i 's/- {{ vm_cidr }}.2\/24/- {{ vm_cidr }}.7\/24/g' /etc/netplan/50-cloud-init.yaml
     become: yes
 
   - name: Update hostname
-    shell: hostnamectl set-hostname cilium-controller3.home.virtualelephant.com
+    shell: hostnamectl set-hostname '{{ vm_prefix }}'-controller3.home.virtualelephant.com
     become: yes
 
 - hosts: localhost
