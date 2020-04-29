@@ -6,6 +6,9 @@
 - import_playbook: kube-master-deploy.yml
 - import_playbook: kube-nodes-deploy.yml
 
+# Optional haproxy VM
+- import_playbook: haproxy-deploy.yml
+
 # Optional to create DRS rules
 - import_playbook: kube-drs-rules.yml
 

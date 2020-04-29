@@ -1,0 +1,117 @@
+---
+- hosts: localhost
+  gather_facts: false
+  connection: local
+
+  vars_files:
+    - envanswer.yml
+
+  tasks:
+  - name: Create Ubuntu HAProxy VM
+    vmware_guest:
+      hostname: "{{ vcenter }}"
+      username: "{{ vcenter_user }}"
+      password: "{{ vcenter_pass }}"
+      validate_certs: False
+      name: "{{ vm_prefix }}-haproxy"
+      template: "{{ ubuntu_template }}"
+      datacenter: "{{ dc }}"
+      cluster: "{{ cluster_name }}"
+      folder: "{{ folder }}"
+      datastore: "{{ datastore }}"
+      state: poweredoff
+    delegate_to: localhost
+    register: createvm
+
+  - name: Delete NIC from HAProxy VM
+    vmware_guest_network:
+      hostname: "{{ vcenter }}"
+      username: "{{ vcenter_user }}"
+      password: "{{ vcenter_pass }}"
+      validate_certs: false
+      name: "{{ vm_prefix }}-haproxy"
+      gather_network_info: false
+      networks:
+        - label: "Network adapter 1"
+          state: absent
+    delegate_to: localhost
+
+  - name: Add NIC and set to connected for HAProxy VM
+    vmware_guest_network:
+      hostname: "{{ vcenter }}"
+      username: "{{ vcenter_user }}"
+      password: "{{ vcenter_pass }}"
+      validate_certs: false
+      name: "{{ vm_prefix }}-haproxy"
+      gather_network_info: false
+      networks:
+        - device_type: vmxnet3
+          name: "{{ portgroup }}"
+          connected: true
+          start_connected: true
+          state: new
+    delegate_to: localhost
+
+  - name: Power on "{{vm_prefix}}-haproxy"
+    vmware_guest:
+      hostname: "{{ vcenter }}"
+      username: "{{ vcenter_user }}"
+      password: "{{ vcenter_pass }}"
+      validate_certs: false
+      name: "{{ vm_prefix }}-haproxy"
+      state: poweredon
+    delegate_to: localhost
+
+  - name: Wait for VMtools to start
+    vmware_guest_tools_wait:
+      hostname: "{{ vcenter }}"
+      username: "{{ vcenter_user }}"
+      password: "{{ vcenter_pass }}"
+      validate_certs: false
+      name: "{{ vm_prefix }}-haproxy"
+    delegate_to: localhost
+
+  - pause:
+      minutes: 1
+
+- hosts: "{{ temp_vm }}"
+  gather_facts: false
+  vars_files:
+    - envanswer.yml
+
+  tasks:
+  - name: Update IP address in /etc/netplan/50-cloud-init.yaml
+    shell: sed -i 's/- {{ vm_cidr }}.2\/24/- {{ vm_cidr }}.4\/24/g' /etc/netplan/50-cloud-init.yaml
+    become: yes
+
+  - name: Update hostname
+    shell: hostnamectl set-hostname '{{ vm_prefix }}'-haproxy.home.virtualelephant.com
+    become: yes
+
+- hosts: localhost
+  gather_facts: false
+  connection: local
+
+  vars_files:
+    - envanswer.yml
+
+  tasks:
+  - name: Reboot "{{vm_prefix}}-haproxy"
+    vmware_guest:
+      hostname: "{{ vcenter }}"
+      username: "{{ vcenter_user }}"
+      password: "{{ vcenter_pass }}"
+      validate_certs: false
+      name: "{{ vm_prefix }}-haproxy"
+      state: rebootguest
+    delegate_to: localhost
+
+  - name: Wait for VMtools to start
+    vmware_guest_tools_wait:
+      hostname: "{{ vcenter }}"
+      username: "{{ vcenter_user }}"
+      password: "{{ vcenter_pass }}"
+      validate_certs: false
+      name: "{{ vm_prefix }}-haproxy"
+    delegate_to: localhost
+

@@ -1,0 +1,40 @@
+---
+- hosts: kube-haproxy
+  become: yes
+  gather_facts: false
+
+  vars_files:
+    - envanswer.yml
+
+  tasks:
+  - name: Add HAProxy repository
+    lineinfile:
+      dest: /etc/apt/sources.list.d/haproxy.list
+      line: "deb http://ppa.launchpad.net/vbernat/haproxy-1.8/ubuntu bionic main"
+      create: yes
+
+
+  - name: Update repo for HAProxy
+    apt:
+      update_cache: yes
+      force_apt_get: yes
+
+  - name: Install HAProxy
+    apt:
+      name: ['haproxy']
+      force_apt_get: yes
+      state: present
+
+  - name: Copy haproxy.cfg file for api-server
+    copy:
+      src: files/haproxy.cfg
+      dest: /etc/haproxy/haproxy.cfg
+      owner: root
+      group: root
+      mode: '0644'
+
+  - name: Enable and start HAProxy service
+    systemd:
+      name: haproxy
+      enabled: yes
+      state: restarted
