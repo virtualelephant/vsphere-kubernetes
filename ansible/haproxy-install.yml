@@ -1,5 +1,5 @@
 ---
-- hosts: kube-haproxy
+- hosts: cilium-haproxy
   become: yes
   gather_facts: false
 
@@ -8,11 +8,8 @@
 
   tasks:
   - name: Add HAProxy repository
-    lineinfile:
-      dest: /etc/apt/sources.list.d/haproxy.list
-      line: "deb http://ppa.launchpad.net/vbernat/haproxy-1.8/ubuntu bionic main"
-      create: yes
-
+    command: add-apt-repository -y ppa:vbernat/haproxy-1.7
+    register: haproxy_apt_repo
 
   - name: Update repo for HAProxy
     apt:

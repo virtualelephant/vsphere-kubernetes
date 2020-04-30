@@ -27,7 +27,7 @@
 
   - block:
       - name: Initialize Kubernetes cluster
-        command: "kubeadm init --pod-network-cidr {{ pod_cidr }}"
+        command: "kubeadm init --pod-network-cidr {{ pod_cidr }} --control-plane-endpoint \"{{ vm_prefix }}-haproxy.{{ domain_name }}:6443\" --upload-certs"
         register: kube_init
 
       - name: Create .kube directory

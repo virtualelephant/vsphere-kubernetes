@@ -7,7 +7,7 @@
 - import_playbook: kubernetes-install.yml
 
 # Optional haproxy playbook
-- import_playbook: haproxy-install.yml
+#- import_playbook: haproxy-install.yml
 
 # Choose one for CNI plugin preferenct
 #- import_playbook: cilium-install.yml

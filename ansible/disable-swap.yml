@@ -20,8 +20,7 @@
     reboot:
       reboot_timeout: 300
       pre_reboot_delay: 0
-      post_reboot_delay: 60
-      test_command: uptime
+      post_reboot_delay: 30
     when: swapfile.changed
 
 - hosts: localhost
