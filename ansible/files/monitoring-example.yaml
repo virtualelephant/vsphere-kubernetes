@@ -302,11 +302,12 @@ metadata:
 spec:
   ports:
   - port: 3000
+    nodePort: 30008
     protocol: TCP
     targetPort: 3000
   selector:
     app: grafana
-  type: ClusterIP
+  type: NodePort 
 ---
 apiVersion: v1
 kind: ConfigMap
