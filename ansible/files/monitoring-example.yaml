@@ -267,14 +267,14 @@ spec:
         - mountPath: /configmap/grafana
           name: grafana-config
           readOnly: true
-        - mountPath: /mnt
+        - mountPath: /var/lib/grafana
           name: grafana-storage
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       volumes:
       - name: grafana-storage
         hostPath:
-          path: /mnt
+          path: /var/lib/grafana
           type: DirectoryOrCreate
       - configMap:
           defaultMode: 420
