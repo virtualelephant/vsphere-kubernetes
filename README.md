@@ -23,6 +23,7 @@ The vSphere environment requires an Ubuntu 18.04 template to clone the VMs from.
 - cilium-install.yml: Initialize Kubernetes & install Cilium CNI (OPTIONAL)
 - flannel-install.yml: Initialize Kubernetes & install Flannel CNI (OPTIONAL)
 - hubble-install.yml: Install Hubble with Grafana & Prometheus to work with Cilium (OPTIONAL)
+- nfs-mounts.yml: Add NFS support to cluster & add persistent mounts for Grafana and Prometheus (OPTIONAL)
 
 ## Prerequisites
 In order to properly leverage this repository, you will need the following pre-configured:
