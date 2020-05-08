@@ -160,6 +160,9 @@ spec:
       restartPolicy: Always
       serviceAccount: prometheus-k8s
       volumes:
+      - name: storage
+        hostPath: /opt/prometheus
+        type: DirectoryOrCreate
       - configMap:
           name: prometheus
         name: config-volume
@@ -274,7 +277,7 @@ spec:
       volumes:
       - name: grafana-storage
         hostPath:
-          path: /var/lib/grafana
+          path: /opt/grafana
           type: DirectoryOrCreate
       - configMap:
           defaultMode: 420
