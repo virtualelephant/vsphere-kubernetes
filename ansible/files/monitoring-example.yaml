@@ -227,11 +227,12 @@ spec:
   ports:
   - name: webui
     port: 9090
+    nodePort: 30009
     protocol: TCP
     targetPort: 9090
   selector:
     app: prometheus
-  type: ClusterIP
+  type: NodePort
 ---
 apiVersion: apps/v1
 kind: Deployment
