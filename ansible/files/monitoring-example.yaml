@@ -155,14 +155,15 @@ spec:
           name: config-volume
           readOnly: true
         - mountPath: /prometheus/
-          name: storage
+          name: prometheus-storage
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       serviceAccount: prometheus-k8s
       volumes:
-      - name: storage
-        hostPath: /opt/prometheus
-        type: DirectoryOrCreate
+      - name: prometheus-storage
+        hostPath:
+          path:  /opt/prometheus
+          type: DirectoryOrCreate
       - configMap:
           name: prometheus
         name: config-volume

@@ -69,6 +69,14 @@
 
   tasks:
   - block:
+      - name: Copy modified hubble.yaml file to controller1
+        copy:
+          src: files/hubble.yaml
+          dest: "{{ home_dir }}/hubble/install/kubernetes"
+          mode: '0644'
+          force: yes
+          backup: yes
+
       - name: Initialize Hubble in the kube-system namespace
         raw: "kubectl apply -f {{ home_dir }}/hubble/install/kubernetes/hubble.yaml"
         become: no
