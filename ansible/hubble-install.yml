@@ -86,7 +86,7 @@
 
       - name: Copy Grafana & Prometheus YAML file for Hubble
         copy:
-          src: files/monitoring-example.yaml
+          src: files/hubble-base-monitoring.yaml
           dest: "{{ home_dir }}"
           mode: "0644"
 
