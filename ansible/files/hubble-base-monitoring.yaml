@@ -128,7 +128,7 @@ metadata:
   name: prometheus
   namespace: cilium-monitoring
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: prometheus
@@ -142,14 +142,29 @@ spec:
       - args:
         - --config.file=/etc/prometheus/prometheus.yaml
         - --storage.tsdb.path=/prometheus/
+        - --storage.tsdb.no-lockfile
         - --log.level=debug
         image: docker.io/prom/prometheus:v2.6.1
         imagePullPolicy: IfNotPresent
+        livenessProbe:
+          httpGet:
+            path: /-/healthy
+            port: 9090
         name: prometheus
         ports:
         - containerPort: 9090
           name: webui
           protocol: TCP
+        readinessProbe:
+          httpGet:
+            path: /-/ready
+            port: 9090
+        resources:
+          requests:
+            memory: "2048Mi"
+            cpu: "10m"
+          limits:
+            memory: "4096Mi"
         volumeMounts:
         - mountPath: /etc/prometheus
           name: config-volume

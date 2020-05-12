@@ -95,7 +95,7 @@
         become: no
 
       - name: Initialize cilium-monitoring pod
-        raw: "kubectl apply -f {{ home_dir }}/monitoring-example.yaml"
+        raw: "kubectl apply -f {{ home_dir }}/hubble-base-monitoring.yaml"
         become: no
   
     when: "'controller1' in inventory_hostname"
