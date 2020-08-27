@@ -1,5 +1,5 @@
 ---
-- hosts: cilium-cluster
+- hosts: kube-cluster
   become: yes
   gather_facts: false
 
@@ -67,9 +67,9 @@
       update_cache: yes
       force_apt_get: yes
 
-  - name: Install Kubernetes v1.17.0 packages
+  - name: Install Kubernetes v1.18.8 packages
     apt:
-      name: ['kubeadm=1.17.0-00', 'kubectl=1.17.0-00', 'kubelet=1.17.0-00', 'kubernetes-cni=0.7.5-00']
+      name: ['kubeadm=1.18.8-00', 'kubectl=1.18.8-00', 'kubelet=1.18.8-00', 'kubernetes-cni']
       force_apt_get: yes
       state: present
 

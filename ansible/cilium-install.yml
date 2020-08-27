@@ -65,7 +65,7 @@
         register: join_command
 
       - name: Install Cilium CNI
-        raw: kubectl create -f https://raw.githubusercontent.com/cilium/cilium/1.7.1/install/kubernetes/quick-install.yaml
+        raw: kubectl create -f https://raw.githubusercontent.com/cilium/cilium/1.8/install/kubernetes/quick-install.yaml
         become: no
         register: cilium_init
 
@@ -95,7 +95,7 @@
 
   # Allow all of the kube-system namespace containers to initialize
   - pause:
-      minutes: 5
+      minutes: 30
 
   - name: Read controller join command on controllers
     debug: msg={{ lookup('file', controller_join_command_location) }}

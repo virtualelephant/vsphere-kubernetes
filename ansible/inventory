@@ -15,6 +15,9 @@ cilium-node4
 cilium-node5
 cilium-node6
 
+[cilium-haproxy]
+cilium-haproxy
+
 [cilium-cluster]
 cilium-controller1
 cilium-controller2
@@ -25,6 +28,20 @@ cilium-node3
 cilium-node4
 cilium-node5
 cilium-node6
+
+[calico-controllers]
+calico-controller1
+
+[calico-nodes]
+calico-node1
+calico-node2
+calico-node3
+
+[calico-cluster]
+calico-controller1
+calico-node1
+calico-node2
+calico-node3
 
 [kube-masters]
 kube-controller1 
@@ -50,7 +67,10 @@ kube-node4
 kube-node5
 kube-node6
 
+[kube-haproxy]
+kube-haproxy
+
 [all:vars]
 ansible_connection=ssh
 ansible_user: deploy
-ansible_ssh_pass=PASSWORD
+ansible_ssh_pass=thAswU53n-CE

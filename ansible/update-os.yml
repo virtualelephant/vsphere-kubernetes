@@ -1,5 +1,5 @@
 ---
-- hosts: cilium-cluster
+- hosts: kube-cluster
   become: yes
   gather_facts: false
 

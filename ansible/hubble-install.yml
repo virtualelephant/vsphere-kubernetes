@@ -30,7 +30,7 @@
 
   - block:
       - name: Clone Hubble GitHub repo
-        shell: "git clone https://github.com/cilium/hubble.git"
+        shell: "git clone --single-branch --branch v0.5 https://github.com/cilium/hubble.git"
 
       - name: Copy Hubble command to controller
         copy:
