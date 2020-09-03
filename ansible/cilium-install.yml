@@ -65,7 +65,7 @@
         register: join_command
 
       - name: Install Cilium CNI
-        raw: kubectl create -f https://raw.githubusercontent.com/cilium/cilium/1.8/install/kubernetes/quick-install.yaml
+        raw: kubectl create -f https://raw.githubusercontent.com/cilium/cilium/master/install/kubernetes/experimental-install.yaml
         become: no
         register: cilium_init
 

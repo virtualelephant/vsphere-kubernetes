@@ -1,5 +1,5 @@
 ---
-- hosts: kube-haproxy
+- hosts: cilium-haproxy
   become: yes
   gather_facts: false
 
