@@ -67,9 +67,9 @@
       update_cache: yes
       force_apt_get: yes
 
-  - name: Install Kubernetes v1.18.8 packages
+  - name: Install Kubernetes v1.19.3 packages
     apt:
-      name: ['kubeadm=1.18.8-00', 'kubectl=1.18.8-00', 'kubelet=1.18.8-00', 'kubernetes-cni']
+      name: ['kubeadm=1.19.3-00', 'kubectl=1.19.3-00', 'kubelet=1.19.3-00', 'kubernetes-cni']
       force_apt_get: yes
       state: present
 
