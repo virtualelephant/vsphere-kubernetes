@@ -5,10 +5,10 @@
 #- import_playbook: update-os.yml
 - import_playbook: disable-swap.yml
 - import_playbook: kubernetes-install.yml
-
-# Optional haproxy playbook
-#- import_playbook: haproxy-install.yml
+- import_playbook: haproxy-install.yml
+- import_playbook: nfs-mounts.yml
 
 # Choose one for CNI plugin preferenct
+#- import_playbook: cilium-preinstall.yml
 #- import_playbook: cilium-install.yml
 #- import_playbook: flannel-install.yml

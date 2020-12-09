@@ -1,5 +1,5 @@
 ---
-- hosts: cilium-cluster
+- hosts: antrea-cluster
   gather_facts: false
   become: yes
 

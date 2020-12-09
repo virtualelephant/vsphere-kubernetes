@@ -1,5 +1,5 @@
 ---
-- hosts: cilium-cluster
+- hosts: antrea-cluster
   gather_facts: false
   become: yes
 
@@ -12,20 +12,3 @@
       name: ['nfs-common']
       force_apt_get: yes
       state: present
-
-  - name: Persistent volume mount for Grafana
-    mount:
-      path: /opt/grafana
-      src: 10.1.10.15:/opt/persistent/grafana
-      fstype: nfs
-      opts: rw,auto,nofail,noatime
-      state: mounted
-
-  - name: Persistent volume mount for Prometheus
-    mount:
-      path: /opt/prometheus
-      src: 10.1.10.15:/opt/persistent/prometheus
-      fstype: nfs
-      opts: rw,auto,nofail,noatime
-      state: mounted
-

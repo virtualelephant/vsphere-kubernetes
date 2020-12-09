@@ -1,4 +1,5 @@
 [temp]
+temp107
 temp105
 temp104
 
@@ -29,19 +30,26 @@ cilium-node4
 cilium-node5
 cilium-node6
 
-[calico-controllers]
-calico-controller1
+[antrea-controllers]
+antrea-controller1
+antrea-controller2
+antrea-controller3
 
-[calico-nodes]
-calico-node1
-calico-node2
-calico-node3
+[antrea-nodes]
+antrea-node1
+antrea-node2
+antrea-node3
 
-[calico-cluster]
-calico-controller1
-calico-node1
-calico-node2
-calico-node3
+[antrea-haproxy]
+antrea-haproxy
+
+[antrea-cluster]
+antrea-controller1
+antrea-controller2
+antrea-controller3
+antrea-node1
+antrea-node2
+antrea-node3
 
 [kube-masters]
 kube-controller1 

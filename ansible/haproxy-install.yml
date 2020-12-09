@@ -1,5 +1,5 @@
 ---
-- hosts: cilium-haproxy
+- hosts: antrea-haproxy
   become: yes
   gather_facts: false
 
@@ -7,20 +7,20 @@
     - envanswer.yml
 
   tasks:
-  - name: Add HAProxy repository
-    command: add-apt-repository -y ppa:vbernat/haproxy-1.7
+  - name: Install HAProxy
+    apt:
+      name: ['haproxy']
+      force_apt_get: yes
+      state: present
+
+  - name: Add repo for HAProxy
+    command: add-apt-repository -y ppa:vbernat/haproxy-2.1 --yes
     register: haproxy_apt_repo
 
   - name: Update repo for HAProxy
     apt:
       update_cache: yes
       force_apt_get: yes
-
-  - name: Install HAProxy
-    apt:
-      name: ['haproxy']
-      force_apt_get: yes
-      state: present
 
   - name: Copy haproxy.cfg file for api-server
     copy:
