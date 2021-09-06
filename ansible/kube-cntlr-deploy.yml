@@ -22,5 +22,5 @@
       state: poweredoff
     delegate_to: localhost
     register: createvm
-    with_sequence: start=1 end=3
+    with_sequence: start=0 end=2
 

@@ -22,4 +22,4 @@
       datastore: "{{ datastore }}"
     delegate_to: localhost
     register: createvm
-    with_sequence: start=1 end={{num_nodes|int}}
+    with_sequence: start=0 end={{num_nodes|int}}

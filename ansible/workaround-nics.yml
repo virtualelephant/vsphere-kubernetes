@@ -19,7 +19,7 @@
         - label: "Network adapter 1"
           state: absent
     delegate_to: localhost
-    with_sequence: start=1 end=3
+    with_sequence: start=0 end=2
 
   - name: Add NIC and set to connected for Controller VMs
     vmware_guest_network:
@@ -31,12 +31,12 @@
       gather_network_info: false
       networks:
         - device_type: vmxnet3
-          name: "{{ portgroup }}"
+          name: "{{ cntlr_portgroup }}"
           connected: true
           start_connected: true
           state: new
     delegate_to: localhost
-    with_sequence: start=1 end=3
+    with_sequence: start=0 end=2
 
   - name: Delete NIC from Minion VMs
     vmware_guest_network:
@@ -50,7 +50,7 @@
         - label: "Network adapter 1"
           state: absent
     delegate_to: localhost
-    with_sequence: start=1 end={{num_nodes|int}}
+    with_sequence: start=0 end={{num_nodes|int}}
 
   - name: Add NIC and set to connected for Minion VMs
     vmware_guest_network:
@@ -62,10 +62,10 @@
       gather_network_info: false
       networks:
         - device_type: vmxnet3
-          name: "{{ portgroup }}"
+          name: "{{ node_portgroup }}"
           connected: true
           start_connected: true
           state: new
     delegate_to: localhost
-    with_sequence: start=1 end={{num_nodes|int}}
+    with_sequence: start=0 end={{num_nodes|int}}
      

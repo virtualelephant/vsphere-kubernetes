@@ -1,12 +1,12 @@
 ---
-- hosts: antrea-cluster
+- hosts: cilium-cluster
   become: yes
   gather_facts: false
 
   tasks:
   - name: Install pre-requisite packages
     apt:
-      name: ['apt-transport-https', 'gnupg', 'ca-certificates', 'curl', 'software-properties-common']
+      name: ['apt-transport-https', 'gnupg', 'ca-certificates', 'curl', 'software-properties-common', 'inetutils-traceroute']
       force_apt_get: yes
       state: present
 
@@ -69,7 +69,7 @@
 
   - name: Install Kubernetes v1.19.3 packages
     apt:
-      name: ['kubeadm=1.19.3-00', 'kubectl=1.19.3-00', 'kubelet=1.19.3-00', 'kubernetes-cni']
+      name: ['kubeadm=1.21.1-00', 'kubectl=1.21.1-00', 'kubelet=1.21.1-00', 'kubernetes-cni']
       force_apt_get: yes
       state: present
 

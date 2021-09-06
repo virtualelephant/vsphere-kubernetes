@@ -1,5 +1,5 @@
 ---
-- hosts: antrea-cluster
+- hosts: cilium-cluster
   gather_facts: false
   become: yes
 
@@ -39,7 +39,7 @@
       validate_certs: false
       name: "{{ vm_prefix }}-controller{{ item }}"
     delegate_to: localhost
-    with_sequence: start=1 end=3
+    with_sequence: start=0 end=2
 
   - name: Wait for VMtools to start on minions
     vmware_guest_tools_wait:
@@ -49,5 +49,5 @@
       validate_certs: false
       name: "{{ vm_prefix }}-node{{ item }}"
     delegate_to: localhost
-    with_sequence: start=1 end={{num_nodes|int}}
+    with_sequence: start=0 end={{num_nodes|int}}
 
