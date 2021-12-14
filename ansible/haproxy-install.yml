@@ -1,5 +1,5 @@
 ---
-- hosts: antrea-haproxy
+- hosts: openshift-haproxy
   become: yes
   gather_facts: false
 

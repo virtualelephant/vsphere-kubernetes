@@ -5,7 +5,7 @@
 #- import_playbook: update-os.yml
 - import_playbook: disable-swap.yml
 - import_playbook: kubernetes-install.yml
-- import_playbook: haproxy-install.yml
+#- import_playbook: haproxy-install.yml
 - import_playbook: nfs-mounts.yml
 
 # Choose one for CNI plugin preferenct

@@ -19,4 +19,4 @@
         num_cpus: 4
     delegate_to: localhost
     register: update_minion_hw
-    with_sequence: start=1 end={{num_nodes|int}}
+    with_sequence: start=0 end={{num_nodes|int}}

@@ -4,31 +4,36 @@ temp105
 temp104
 
 [cilium-controllers]
-cilium-controller1
-cilium-controller2
-cilium-controller3
+controller0.kubernetes.virtualelephant.com
+controller1.kubernetes.virtualelephant.com
+controller2.kubernetes.virtualelephant.com
 
 [cilium-nodes]
-cilium-node1
-cilium-node2
-cilium-node3
-cilium-node4
-cilium-node5
-cilium-node6
-
-[cilium-haproxy]
-cilium-haproxy
+node0.kubernetes.virtualelephant.com
+node1.kubernetes.virtualelephant.com
+node2.kubernetes.virtualelephant.com
+node3.kubernetes.virtualelephant.com
+node4.kubernetes.virtualelephant.com
+node5.kubernetes.virtualelephant.com
 
 [cilium-cluster]
-cilium-controller1
-cilium-controller2
-cilium-controller3
-cilium-node1
-cilium-node2
-cilium-node3
-cilium-node4
-cilium-node5
-cilium-node6
+controller0.kubernetes.virtualelephant.com
+controller1.kubernetes.virtualelephant.com
+controller2.kubernetes.virtualelephant.com
+node0.kubernetes.virtualelephant.com
+node1.kubernetes.virtualelephant.com
+node2.kubernetes.virtualelephant.com
+node3.kubernetes.virtualelephant.com
+node4.kubernetes.virtualelephant.com
+node5.kubernetes.virtualelephant.com
+
+[ncp]
+kubencp-controller0
+kubencp-controller1
+kubencp-controller2
+kubencp-node0
+kubencp-node1
+kubencp-node2
 
 [antrea-controllers]
 antrea-controller1
@@ -77,6 +82,10 @@ kube-node6
 
 [kube-haproxy]
 kube-haproxy
+
+[openshift-haproxy]
+api.ocp4.home.virtualelephant.com
+ingress.ocp4.home.virtualelephant.com
 
 [all:vars]
 ansible_connection=ssh

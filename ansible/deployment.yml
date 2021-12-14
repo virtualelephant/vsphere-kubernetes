@@ -3,7 +3,7 @@
 # Deploy Kubernetes VMs inside VMware SDDC
 #
 # Clone template to create Kubernetes cluster VMs
-- import_playbook: kube-master-deploy.yml
+- import_playbook: kube-cntlr-deploy.yml
 - import_playbook: kube-nodes-deploy.yml
 
 # Not needed if using NSX-T
@@ -11,12 +11,12 @@
 #- import_playbook: haproxy-deploy.yml
 
 # Optional to create DRS rules
-#- import_playbook: kube-drs-rules.yml
+- import_playbook: kube-drs-rules.yml
 
 # Optional to increase CPU and memory to minions
-#- import_playbook: kube-nodes-hw.yml
+- import_playbook: kube-nodes-hw.yml
 
 # Required for network connectivity
-#- import_playbook: workaround-nics.yml
+- import_playbook: workaround-nics.yml
 #- import_playbook: config-ip-controllers.yml
 #- import_playbook: config-ip-minions.yml
