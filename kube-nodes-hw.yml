@@ -15,8 +15,8 @@
       validate_certs: false
       name: "{{ vm_prefix }}-node{{ item }}"
       hardware:
-        memory_mb: 8192
-        num_cpus: 4
+        memory_mb: "{{ node_mem|int }}"
+        num_cpus: "{{ node_vcpu|int }}"
     delegate_to: localhost
     register: update_minion_hw
-    with_sequence: start=0 end={{num_nodes|int}}
+    with_sequence: start=1 end={{num_nodes|int}}

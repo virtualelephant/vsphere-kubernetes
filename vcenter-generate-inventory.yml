@@ -1,0 +1,90 @@
+---
+- name: Query vCenter Server and Get VM IP Addresses
+  hosts: localhost
+  gather_facts: no
+  vars_files:
+    - envanswer.yml
+
+  tasks:
+    - name: Get Guest IP address of kube-controller0
+      vmware_guest_info:
+        hostname: "{{ vcenter }}"
+        username: "{{ vcenter_user }}"
+        password: "{{ vcenter_pass }}"
+        datacenter: "{{ dc }}"
+        validate_certs: False
+        schema: vsphere
+        name: "{{ vm_prefix }}-controller0"
+        properties:
+          - guest.ipAddress
+      register: kube_controller0_ip
+
+    - name: Get Guest IP address of kube-controller1
+      vmware_guest_info:
+        hostname: "{{ vcenter }}"
+        username: "{{ vcenter_user }}"
+        password: "{{ vcenter_pass }}"
+        datacenter: dc
+        validate_certs: False
+        schema: vsphere
+        name: "{{ vm_prefix }}-controller1"
+        properties:
+          - guest.ipAddress
+      register: kube_controller1_ip
+
+    - name: Get Guest IP address of kube-controller2
+      vmware_guest_info:
+        hostname: "{{ vcenter }}"
+        username: "{{ vcenter_user }}"
+        password: "{{ vcenter_pass }}"
+        datacenter: "{{ dc }}"
+        validate_certs: False
+        schema: vsphere
+        name: "{{ vm_prefix }}-controller2"
+        properties:
+          - guest.ipAddress
+      register: kube_controller2_ip
+
+    - name: Get Guest IP addresses of kube-node VMs
+      vmware_guest_info:
+        hostname: "{{ vcenter }}"
+        username: "{{ vcenter_user }}"
+        password: "{{ vcenter_pass }}"
+        datacenter: "{{ dc }}"
+        validate_certs: False
+        schema: vsphere
+        name: "{{ vm_prefix }}-node{{ item }}"
+        properties:
+          - guest.ipAddress
+      register: kube_node_ips
+      with_sequence: start=1 end={{num_nodes|int}}
+
+    - name: Print IP addresses
+      debug:
+        msg:
+          - "kube-controller0 IP address is {{ kube_controller0_ip.instance.guest.ipAddress }}"
+          - "kube-controller1 IP address is {{ kube_controller1_ip.instance.guest.ipAddress }}"
+          - "kube-controller2 IP address is {{ kube_controller2_ip.instance.guest.ipAddress }}"
+
+    - name: Write IP addresses to inventory file
+      copy:
+        content: |
+          [kube-controllers]
+          kube-controller0 ansible_host={{ kube_controller0_ip.instance.guest.ipAddress }}
+          kube-controller1 ansible_host={{ kube_controller1_ip.instance.guest.ipAddress }}
+          kube-controller2 ansible_host={{ kube_controller2_ip.instance.guest.ipAddress }}
+
+          [kube-nodes]
+          {% for node in range(num_nodes) %}
+          {{ vm_prefix }}-node{{ node+1|int }} ansible_host={{ kube_node_ips.results[node].instance.guest.ipAddress }}
+          {% endfor %}
+          
+          [kube-cluster]
+          kube-controller0 ansible_host={{ kube_controller0_ip.instance.guest.ipAddress }}
+          kube-controller1 ansible_host={{ kube_controller1_ip.instance.guest.ipAddress }}
+          kube-controller2 ansible_host={{ kube_controller2_ip.instance.guest.ipAddress }}
+          {% for node in range(num_nodes) %}
+          {{ vm_prefix }}-node{{ node+1|int }} ansible_host={{ kube_node_ips.results[node].instance.guest.ipAddress }}
+          {% endfor %}
+
+        dest: inventory

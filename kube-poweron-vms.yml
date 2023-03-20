@@ -1,0 +1,31 @@
+---
+- hosts: localhost
+  gather_facts: false
+  connection: local
+
+  vars_files:
+    - envanswer.yml
+
+  tasks:
+  - name: Power on Kubernetes Controllers
+    vmware_guest:
+      hostname: "{{ vcenter }}"
+      username: "{{ vcenter_user }}"
+      password: "{{ vcenter_pass }}"
+      validate_certs: false
+      name: "{{ vm_prefix }}-controller{{ item }}"
+      state: poweredon
+    delegate_to: localhost
+    with_sequence: start=0 end=2
+
+  - name: Power on Kubernetes Worker Nodes
+    vmware_guest:
+      hostname: "{{ vcenter }}"
+      username: "{{ vcenter_user }}"
+      password: "{{ vcenter_pass }}"
+      validate_certs: false
+      name: "{{ vm_prefix }}-node{{ item }}"
+      state: poweredon
+    delegate_to: localhost
+    with_sequence: start=1 end={{num_nodes|int}}
+

@@ -1,10 +1,10 @@
 # VMware SDDC information
 vcenter: "vcenter.home.virtualelephant.com"
 vcenter_user: "administrator@vsphere.local"
-vcenter_pass: "PASSWORD"
-dc: "Datacenter"
+vcenter_pass: "thAswU53n-CE2023"
+dc: "Lab"
 cluster_name: "R630 Cluster"
-datastore: "syn-lun4"
+datastore: "synlun-2"
 
 
 # Cilium Cluster
@@ -16,12 +16,12 @@ datastore: "syn-lun4"
 #vm_cidr: "10.105.0"
 
 # Flannel Cluster
-folder: "Kubernetes"
+folder: "Kubernetes/Native"
 vm_prefix: "kube"
-ubuntu_template: "Ubuntu-18.04-LTS-v104"
+ubuntu_template: "ubuntu-server-kube-22.04.1.lts"
 temp_vm: "temp104"
-portgroup: "vlan104"
-vm_cidr: "10.104.0"
+portgroup: "ve-tenant-1"
+vm_cidr: "10.235.0"
 
 num_nodes: 6
 
