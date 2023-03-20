@@ -1,0 +1,3 @@
+---
+- import_playbook: disable-swap.yml
+- import_playbook: install-k8s-packages.yml
