@@ -1,0 +1,53 @@
+---
+- hosts: kube-cluster
+  gather_facts: false
+  become: yes
+
+  tasks:
+  # Code copied from https://germaniumhq.com/2019/02/14/2019-02-14-Disabling-Swap-for-Kubernetes-in-an-Ansible-Playbook/
+  - name: Disable swap in Ubuntu OS
+    shell: |
+      swapoff -a
+
+  - name: Disable swap in /etc/fstab
+    replace:
+      path: /etc/fstab
+      regexp: '^([^#].*?\sswap\s+sw\s+.*)$'
+      replace: '# \1'
+    register: swapfile
+
+  - name: Reboot node if swapfile changed
+    reboot:
+      reboot_timeout: 300
+      pre_reboot_delay: 0
+      post_reboot_delay: 30
+    when: swapfile.changed
+
+- hosts: localhost
+  gather_facts: false
+  connection: local
+
+  vars_files:
+    - envanswer.yml
+
+  tasks:
+  - name: Wait for VMtools to start on controllers
+    vmware_guest_tools_wait:
+      hostname: "{{ vcenter }}"
+      username: "{{ vcenter_user }}"
+      password: "{{ vcenter_pass }}"
+      validate_certs: false
+      name: "{{ vm_prefix }}-controller{{ item }}"
+    delegate_to: localhost
+    with_sequence: start=0 end=2
+
+  - name: Wait for VMtools to start on workers
+    vmware_guest_tools_wait:
+      hostname: "{{ vcenter }}"
+      username: "{{ vcenter_user }}"
+      password: "{{ vcenter_pass }}"
+      validate_certs: false
+      name: "{{ vm_prefix }}-node{{ item }}"
+    delegate_to: localhost
+    with_sequence: start=1 end={{num_nodes|int}}
+
