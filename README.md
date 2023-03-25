@@ -21,4 +21,6 @@ These are the individual Ansible Playbooks leveraged to deploy Kubernetes inside
 
 ## Ansible Playbooks for Kubernetes deployment
 - disable-swap.yml: Disables swap inside the OS for each nodes
-- install-k8s-packages.yml: Installs all the necessary Kubernetes packages and prerequisites inside Ubuntu.
+- install-k8s-packages.yml: Installs all the necessary Kubernetes packages and prerequisites inside Ubuntu
+- containerd-workaround.yml: (Optional) Known issue with containerd /etc/containerd/config.toml file
+- initialize-kubernetes.yml: Initializes the Kubernetes cluster, deploys Antrea CNI, adds both controllers + workers to cluster

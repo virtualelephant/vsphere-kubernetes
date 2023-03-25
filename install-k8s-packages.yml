@@ -80,3 +80,8 @@
       name: ['kubeadm', 'kubectl', 'kubernetes-cni', 'kubelet']
       force_apt_get: yes
       state: present
+
+  - name: Install openvswitch
+    apt:
+      name: ['openvswitch-switch-dpdk']
+      state: present

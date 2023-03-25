@@ -6,6 +6,7 @@
   vars:
     join_command_location: "{{ home_dir }}/git/vsphere-kubernetes/cluster_join.out"
     controller_join_command_location: "{{ home_dir }}/git/vsphere-kubernetes/controller_join.out"
+    antrea_version: "v1.11.0"
 
   vars_files:
     - envanswer.yml
@@ -35,6 +36,10 @@
       - name: Extract the certificate-key token
         command: "kubeadm alpha certs certificate-key"
         register: certificate_token
+
+      - name: Initialize the CNI Antrea inside the cluster
+        command: "kubectl apply -f https://github.com/antrea-io/antrea/releases/download/{{ antrea_version }}/antrea.yml"
+        register: antrea_command
 
       - pause:
           minutes: 2
@@ -95,7 +100,7 @@
   - name: Join 3rd controller to Kubernetes cluster
     command: "{{ controller_join_local.msg }}"
     when: "'controller2' in inventory_hostname"
-    
+
   - name: Read join command on minion nodes
     debug: msg={{ lookup('file', join_command_location) }}
     register: join_command_local
