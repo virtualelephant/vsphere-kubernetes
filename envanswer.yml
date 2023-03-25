@@ -19,3 +19,7 @@ home_dir: "/home/deploy"
 node_mem: 8192
 node_vcpu: 4
 local_user: USER
+
+# Networking information
+virtual_service: "IP.ADD.RESS.LB"
+domain_name: "SUB.DOMAIN.NAME"

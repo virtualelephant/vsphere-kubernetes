@@ -49,6 +49,18 @@
       enabled: yes
       state: restarted
 
+  # workaround for an issue with Ubuntu 20.x and 22.x with containerd.io
+  - name: Fix containerd issue
+    ansible.builtin.file:
+      path: /etc/containerd/config.toml
+      state: absent
+
+  - name: Restart containerd
+    systemd:
+      name: containerd
+      enabled: yes
+      state: restarted
+
   - name: Install Kubernetes GPG key
     shell: "curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -"
       
