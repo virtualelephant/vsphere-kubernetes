@@ -81,7 +81,8 @@
       force_apt_get: yes
       state: present
 
-  - name: Install openvswitch
+  - name: Install openvswitch for Antrea CNI
     apt:
       name: ['openvswitch-switch-dpdk']
       state: present
+      force_apt_get: yes
