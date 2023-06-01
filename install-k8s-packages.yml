@@ -18,14 +18,11 @@
       state: present
 
   - name: Install Docker GPG key
-    shell: "curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -"
+    shell: "curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg"
 
   - name: Add sources.list.d file for Docker
-    lineinfile:
-      dest: /etc/apt/sources.list.d/docker.list
-      line: "deb https://download.docker.com/linux/ubuntu jammy stable"
-      create: yes
-
+    shell: "echo \"deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null\"""
+    
   - name: Update repo for Docker
     apt:
       update_cache: yes
@@ -62,14 +59,11 @@
       state: restarted
 
   - name: Install Kubernetes GPG key
-    shell: "curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -"
+    shell: "curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo gpg --dearmour -o /etc/apt/trusted.gpg.d/kubernetes-xenial.gpg"
       
   - name: Create sources.list.d file for Kubernetes
-    lineinfile:
-      dest: /etc/apt/sources.list.d/kubernetes.list
-      line: "deb https://apt.kubernetes.io/ kubernetes-xenial main"
-      create: yes
-
+    shell: "apt-add-repository \"deb http://apt.kubernetes.io/ kubernetes-xenial main\""
+    
   - name: Update package cache in Ubuntu
     apt:
       update_cache: yes
